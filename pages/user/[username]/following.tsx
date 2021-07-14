@@ -40,7 +40,7 @@ const Following = ({ username }: any) => {
         description={`People followed by ${data?.user?.displayName} (@${data?.user?.username}). ${data?.user?.bio}`}
       ></Head>
       <div className="flex min-h-screen justify-center">
-        <LeftBar />
+        {/* <LeftBar /> */}
         <div className="bg-gray-100 max-w-[598px] flex-grow px-0.5">
           <FollowHeader user={data?.user as User} />
           <FollowList

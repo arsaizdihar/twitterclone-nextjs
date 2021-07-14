@@ -19,7 +19,7 @@ const Tweet: React.FC<{ tweet: tweetObject; likeTweetCallback: () => void }> =
   ({ tweet, likeTweetCallback }) => {
     const sender = tweet.user;
     return (
-      <div className="bg-white flex px-4 m-1 py-4 hover:bg-gray-100 cursor-pointer">
+      <div className="bg-white flex px-2 sm:px-4 m-1 py-4 hover:bg-gray-100 cursor-pointer">
         <div className="mr-2 w-12 flex-shrink-0">
           <ProfilePic
             src={sender.photo}
@@ -27,17 +27,19 @@ const Tweet: React.FC<{ tweet: tweetObject; likeTweetCallback: () => void }> =
           ></ProfilePic>
         </div>
         <div className="flex flex-col flex-grow px-2">
-          <div className="flex items-center max-w-full">
+          <div className="flex items-center max-w-full flex-wrap relative">
             <Link href={`/user/${sender.username}`}>
               <a className="font-bold hover:underline">{sender.displayName}</a>
             </Link>
             {sender.verified && <Verified />}
-            <span className="pl-2 text-gray-600">
+            <span className="sm:pl-2 text-gray-600 block w-full sm:inline-block sm:w-auto">
               @{sender.username} · {getTweetTimeString(tweet.createdAt)}
             </span>
-            <ThreeDots />
+            <div className="absolute sm:static top-0 right-0 sm:flex flex-grow justify-end">
+              <ThreeDots />
+            </div>
           </div>
-          <p className="break-words max-w-full">{tweet.text}</p>
+          <p className="break-words sm:max-w-full">{tweet.text}</p>
           <div className="flex justify-between mt-2 text-gray-600">
             <div className="flex items-center hover:text-blue-400 group">
               <div className="rounded-full h-8 w-8 group-hover:bg-blue-100 flex justify-center items-center cursor-pointer">

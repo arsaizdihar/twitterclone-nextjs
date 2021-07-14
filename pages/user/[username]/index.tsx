@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { withUrqlClient } from "next-urql";
-import React from "react";
+import React, { useState } from "react";
 import useUser from "../../../src/components/auth/useUser";
 import Head from "../../../src/components/main-ui/Head";
 import LeftBar from "../../../src/components/main-ui/LeftBar";
@@ -17,6 +17,7 @@ interface Props {
 const UserProfile: NextPage<Props> = ({ username }) => {
   const { user } = useUser(false);
   const [{ data, fetching }] = useUserQuery({ variables: { username } });
+  const [isOpen, setIsOpen] = useState(false);
   const profileUser = data?.user;
   return (
     <>
@@ -26,7 +27,7 @@ const UserProfile: NextPage<Props> = ({ username }) => {
         imageURL={profileUser?.photo || undefined}
       ></Head>
       <div className="flex min-h-screen justify-center">
-        <LeftBar />
+        <LeftBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <Profile
           isCurrentUser={profileUser?.username === user?.username}
           username={username}

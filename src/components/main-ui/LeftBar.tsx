@@ -6,6 +6,7 @@ import {
   faBell,
   faBookmark,
   faUser,
+  faTimesCircle,
 } from "@fortawesome/free-regular-svg-icons";
 import ProfilePic from "./ProfilePic";
 import ThreeDots from "../icons/ThreeDots";
@@ -15,11 +16,24 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Verified from "../icons/Verified";
 
-const LeftBar: React.FC = () => {
+const LeftBar: React.FC<{
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ isOpen, setIsOpen }) => {
   const user = useSelector(getUser);
   const router = useRouter();
   return (
-    <nav className="flex flex-col flex-shrink-0 py-1 pl-5 xl:px-5 space-y-3 max-h-screen sticky left-0 top-0 overflow-y-auto select-none">
+    <nav
+      className={`${
+        isOpen ? "flex" : "hidden sm:flex"
+      } flex-col flex-shrink-0 py-1 pl-2 sm:pl-5 pr-2 sm:pr-0 xl:px-5 space-y-1 2xl:space-y-3 max-h-screen fixed sm:sticky left-0 top-0 overflow-y-auto select-none bg-white z-50 h-screen`}
+    >
+      <div
+        className="sm:hidden text-blue-400 hover:text-blue-300 cursor-pointer"
+        onClick={() => setIsOpen(false)}
+      >
+        <FontAwesomeIcon icon={faTimesCircle} transform="shrink-6" />
+      </div>
       <IconDiv icon={faTwitter} current href={router.asPath} />
       <IconDiv
         icon={faHome}
@@ -29,10 +43,10 @@ const LeftBar: React.FC = () => {
       />
       {/* Search */}
       <div className="flex lg:hidden">
-        <div className="cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-12 w-12 hover:text-blue-400 text-gray-600 flex items-center justify-center">
+        <div className="cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 2xl:h-12 2xl:w-12 hover:text-blue-400 text-gray-600 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8"
+            className="h-6 w-6 2xl:h-8 2xl:w-8"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -48,10 +62,10 @@ const LeftBar: React.FC = () => {
       </div>
       <div className="hidden lg:flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-12 w-12 flex items-center justify-center">
+          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
+              className="h-6 w-6 2xl:h-8 2xl:w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -64,16 +78,18 @@ const LeftBar: React.FC = () => {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-bold hidden xl:inline pr-4">Explore</h3>
+          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+            Explore
+          </h3>
         </div>
       </div>
       <IconDiv icon={faBell} name="Notifications" href="/" />
       <div className="flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-12 w-12 flex items-center justify-center">
+          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
+              className="h-6 w-6 2xl:h-8 2xl:w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -86,24 +102,28 @@ const LeftBar: React.FC = () => {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-bold hidden xl:inline pr-4">Explore</h3>
+          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+            Explore
+          </h3>
         </div>
       </div>
       <IconDiv icon={faBookmark} name="Bookmarks" href="/" />
       <div className="flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-12 w-12 flex items-center justify-center">
+          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
-              className="h-8 w-8"
+              className="h-6 w-6 2xl:h-8 2xl:w-8"
               fill="currentColor"
             >
               <path d="M19.75 22H4.25C3.01 22 2 20.99 2 19.75V4.25C2 3.01 3.01 2 4.25 2h15.5C20.99 2 22 3.01 22 4.25v15.5c0 1.24-1.01 2.25-2.25 2.25zM4.25 3.5c-.414 0-.75.337-.75.75v15.5c0 .413.336.75.75.75h15.5c.414 0 .75-.337.75-.75V4.25c0-.413-.336-.75-.75-.75H4.25z"></path>
               <path d="M17 8.64H7c-.414 0-.75-.337-.75-.75s.336-.75.75-.75h10c.414 0 .75.335.75.75s-.336.75-.75.75zm0 4.11H7c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75zm-5 4.11H7c-.414 0-.75-.335-.75-.75s.336-.75.75-.75h5c.414 0 .75.337.75.75s-.336.75-.75.75z"></path>
             </svg>
           </div>
-          <h3 className="text-xl font-bold hidden xl:inline pr-4">Lists</h3>
+          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+            Lists
+          </h3>
         </div>
       </div>
       <IconDiv
@@ -114,10 +134,10 @@ const LeftBar: React.FC = () => {
       />
       <div className="flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-12 w-12 flex items-center justify-center">
+          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
+              className="h-6 w-6 2xl:h-8 2xl:w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -130,12 +150,14 @@ const LeftBar: React.FC = () => {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-bold hidden xl:inline pr-4">More</h3>
+          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+            More
+          </h3>
         </div>
       </div>
       <IconDiv icon={faSignOutAlt} name="Logout" href="/auth/logout" />
       <div></div>
-      <div className="rounded-full bg-blue-400 hover:bg-opacity-80 h-12 w-12 xl:w-full text-white flex items-center justify-center flex-shrink-0 cursor-pointer">
+      <div className="rounded-full bg-blue-400 hover:bg-opacity-80 h-10 w-10 xl:h-12 xl:w-full text-white flex items-center justify-center flex-shrink-0 cursor-pointer">
         <span className="font-bold text-lg hidden xl:inline-block">Tweet</span>
         <svg
           viewBox="0 0 24 24"
@@ -148,7 +170,7 @@ const LeftBar: React.FC = () => {
       </div>
 
       {user.isAuthenticated && (
-        <div className="flex-grow flex items-end pb-2">
+        <div className="flex-grow sm:flex items-end pb-2 hidden">
           <Link href={`/user/${user.username}`}>
             <a className="flex items-center rounded-full cursor-pointer xl:hover:bg-blue-100 pt-1 pr-2 xl:px-2 xl:flex-grow">
               <ProfilePic src={user.photo} username={user.username} notLink />
@@ -180,17 +202,19 @@ const IconDiv: React.FC<{
 }> = ({ icon, current, name, href }) => {
   return (
     <Link href={href}>
-      <a className="flex group cursor-pointer xl:mr-4">
+      <a className="flex group cursor-pointer xl:mr-4 ">
         <div
           className={`flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 ${
             current ? "text-blue-400" : "text-gray-600"
           }`}
         >
-          <div className="flex items-center justify-center h-12 w-12">
+          <div className="flex items-center justify-center h-10 w-10 2xl:h-12 2xl:w-12 text-sm 2xl:text-base">
             <FontAwesomeIcon icon={icon} transform="shrink-8" />
           </div>
           {name !== undefined && (
-            <h3 className="text-xl font-bold hidden xl:inline pr-4">{name}</h3>
+            <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+              {name}
+            </h3>
           )}
         </div>
       </a>

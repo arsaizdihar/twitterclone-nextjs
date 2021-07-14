@@ -6,10 +6,13 @@ import {
 } from "../../generated/graphql";
 import { getUser } from "../../redux/slices/userSlice";
 import { isServer } from "../../utils/isServer";
+import ProfilePic from "./ProfilePic";
 import Tweet, { tweetObject } from "./tweet/Tweet";
 import TweetInput from "./tweet/TweetInput";
 
-const Main: React.FC = () => {
+const Main: React.FC<{
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setIsOpen }) => {
   const [tweets, setTweets] = useState<tweetObject[]>([]);
   const user = useSelector(getUser);
   const [{ data, fetching }] = useGetTweetsQuery({ pause: isServer() });
@@ -27,8 +30,11 @@ const Main: React.FC = () => {
     });
   };
   return (
-    <div className="bg-gray-100 max-w-[598px] flex-grow">
+    <div className="bg-gray-100 flex-grow">
       <div className="bg-white m-1 px-4 py-2 flex items-center">
+        <div className="pr-2 sm:hidden" onClick={() => setIsOpen(true)}>
+          <ProfilePic notLink src={user.photo} />
+        </div>
         <h1 className="font-extrabold text-xl flex-grow">Home</h1>
         <div className="text-blue-400 cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
           <svg

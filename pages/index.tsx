@@ -1,5 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import Head from "next/head";
+import { useState } from "react";
 import useUser from "../src/components/auth/useUser";
 import LeftBar from "../src/components/main-ui/LeftBar";
 import Main from "../src/components/main-ui/Main";
@@ -9,6 +10,7 @@ import { createUrqlClient } from "../src/utils/createUrqlClient";
 
 function Home() {
   const { user, loading } = useUser();
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <Head>
@@ -17,8 +19,8 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex min-h-screen justify-center">
-        <LeftBar />
-        <Main />
+        <LeftBar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Main setIsOpen={setIsOpen} />
         <RightBar />
         <MessagesBar />
       </div>

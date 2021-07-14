@@ -29,7 +29,7 @@ const FollowHeader: React.FC<Props> = ({ user }) => {
         </a>
         <h1 className="mx-2 font-bold">{user?.displayName}</h1>
       </div>
-      <div className="flex justify-evenly bg-white font-bold text-gray-700 cursor-pointer">
+      <div className="flex justify-evenly bg-white font-bold text-gray-700 cursor-pointer text-xs sm:text-base">
         <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400">
           <div className="py-3">Followers you know</div>
         </div>
