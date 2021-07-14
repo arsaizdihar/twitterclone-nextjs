@@ -21,7 +21,7 @@ const UserProfile: NextPage<Props> = ({ username }) => {
   return (
     <>
       <Head
-        title={`${data?.user?.displayName} (@${data?.user?.username}) | Twitter`}
+        title={`${data?.user?.displayName} (@${data?.user?.username}) | Twitter Clone`}
         description={`The latest Tweets from ${data?.user?.displayName} (@${data?.user?.username}). ${data?.user?.bio}`}
         imageURL={profileUser?.photo || undefined}
       ></Head>

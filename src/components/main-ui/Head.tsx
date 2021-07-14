@@ -12,7 +12,7 @@ const Head: React.FC<{
         name="description"
         content={description || "Twitter Clone made in nextjs"}
       />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title || "Twitter Clone"} />
       <meta
         name="twitter:description"
@@ -22,7 +22,7 @@ const Head: React.FC<{
         name="twitter:image"
         content={imageURL || "https://abs.twimg.com/favicons/twitter.ico"}
       />
-      <meta name="og:card" content="summary" />
+      <meta name="og:card" content="summary_large_image" />
       <meta name="og:title" content={title || "Twitter Clone"} />
       <meta
         name="og:description"

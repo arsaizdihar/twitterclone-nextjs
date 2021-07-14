@@ -36,7 +36,7 @@ const Followers = ({ username }: any) => {
   return (
     <>
       <Head
-        title={`People following ${data?.user?.displayName} (@${data?.user?.username}) | Twitter`}
+        title={`People following ${data?.user?.displayName} (@${data?.user?.username}) | Twitter Clone`}
         description={`People following ${data?.user?.displayName} (@${data?.user?.username}). ${data?.user?.bio}`}
       ></Head>
       <div className="flex min-h-screen justify-center">
