@@ -1,0 +1,14 @@
+mutation PostTweet($text: String!) {
+  postTweet(text: $text) {
+    success
+    tweet {
+      id
+      pk
+      text
+      createdAt
+      likesCount
+      retweetCount
+      isLiked
+    }
+  }
+}

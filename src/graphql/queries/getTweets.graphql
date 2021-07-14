@@ -1,0 +1,29 @@
+query getTweets(
+  $after: String
+  $commentTo: ID
+  $first: Int
+  $username: String
+) {
+  tweets(
+    after: $after
+    commentTo: $commentTo
+    first: $first
+    username: $username
+  ) {
+    edges {
+      cursor
+      node {
+        user {
+          ...RegularUser
+        }
+        id
+        pk
+        text
+        createdAt
+        likesCount
+        retweetCount
+        isLiked
+      }
+    }
+  }
+}
