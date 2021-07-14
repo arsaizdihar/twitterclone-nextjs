@@ -15,7 +15,7 @@ interface Props {
 }
 
 const UserProfile: NextPage<Props> = ({ username }) => {
-  const { user } = useUser();
+  const { user } = useUser(false);
   const [{ data, fetching }] = useUserQuery({ variables: { username } });
   const profileUser = data?.user;
   return (
@@ -23,6 +23,7 @@ const UserProfile: NextPage<Props> = ({ username }) => {
       <Head
         title={`${data?.user?.displayName} (@${data?.user?.username}) | Twitter`}
         description={`The latest Tweets from ${data?.user?.displayName} (@${data?.user?.username}). ${data?.user?.bio}`}
+        imageURL={profileUser?.photo || undefined}
       ></Head>
       <div className="flex min-h-screen justify-center">
         <LeftBar />
