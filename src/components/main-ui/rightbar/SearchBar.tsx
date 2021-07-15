@@ -4,7 +4,7 @@ const SearchBar = () => {
   const [isFocus, setIsFocus] = useState(false);
   return (
     <form
-      className={`flex items-center rounded-full py-3 px-4 group border ${
+      className={`flex items-center rounded-full py-2 px-4 group border ${
         isFocus
           ? "bg-white text-blue-400 border-blue-400"
           : "bg-gray-100 text-gray-600 border-transparent"

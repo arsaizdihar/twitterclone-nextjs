@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {
   useFollowMutation,
@@ -57,9 +58,11 @@ const WhoToFollow: React.FC<{
       <div className="flex">
         <ProfilePic src={user.photo} />
         <div className="leading-none ml-2">
-          <h4 className="font-bold text-base">
-            {user.displayName} {user.verified && <Verified />}
-          </h4>
+          <Link href={`/user/${user.username}`} passHref>
+            <h4 className="font-bold text-base hover:underline">
+              {user.displayName} {user.verified && <Verified />}
+            </h4>
+          </Link>
           <span className="text-sm text-gray-600">@{user.username}</span>
         </div>
       </div>

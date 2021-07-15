@@ -5,7 +5,7 @@ import WhoToFollows from "./WhoToFollows";
 
 const RightBar: React.FC = () => {
   return (
-    <div className="hidden lg:block p-2 sticky right-0 top-0 h-screen max-h-screen w-[350px]">
+    <div className="hidden lg:block p-2 sticky max-h-screen overflow-y-auto right-0 top-0 w-[350px]">
       <SearchBar />
       <Trends />
       <WhoToFollows />

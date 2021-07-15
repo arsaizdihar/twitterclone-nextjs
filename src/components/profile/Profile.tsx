@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import profileImage from "../../../public/img/profile.jpeg";
 import {
+  useFollowMutation,
   useGetTweetsQuery,
   useLikeTweetMutation,
 } from "../../generated/graphql";
@@ -11,6 +12,7 @@ import Tweet, { tweetObject } from "../main-ui/tweet/Tweet";
 import { isServer } from "../../utils/isServer";
 import { useRouter } from "next/router";
 import Verified from "../icons/Verified";
+import { FollowButton } from "../follow/FollowList";
 
 interface Props {
   isCurrentUser: boolean;
@@ -26,6 +28,12 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
   const router = useRouter();
   const [tweets, setTweets] = useState<tweetObject[]>([]);
   const [, likeTweet] = useLikeTweetMutation();
+  const [, follow] = useFollowMutation();
+  const followCallback = () => {
+    if (user.pk) {
+      follow({ userId: user.pk });
+    }
+  };
   useEffect(() => {
     if (data?.tweets) {
       const tweetsData = data?.tweets?.edges;
@@ -40,7 +48,7 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
     });
   };
   return (
-    <div className="bg-gray-100 max-w-[598px] flex-grow px-0.5">
+    <div className="bg-gray-100 max-w-[598px] flex-grow px-0.5 min-h-screen">
       <div className="bg-white flex p-2 items-center">
         <Link href="/">
           <a className="text-blue-400 hover:bg-blue-100 h-10 w-10 flex items-center justify-center rounded-full cursor-pointer">
@@ -70,13 +78,20 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
               className="rounded-full"
             />
           </div>
-          {isCurrentUser && (
-            <div className="flex justify-end">
+          <div className="flex justify-end">
+            {isCurrentUser ? (
               <button className="outline-none bg-white border border-blue-400 text-blue-400 py-2 px-4 rounded-full font-bold hover:bg-blue-100">
                 Edit profile
               </button>
-            </div>
-          )}
+            ) : (
+              !isServer() && (
+                <FollowButton
+                  isFollowed={user.isFollowed}
+                  followCallback={followCallback}
+                />
+              )
+            )}
+          </div>
         </div>
         <div className="leading-tight">
           <div className="py-2">
@@ -107,17 +122,17 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
           </Link>
         </div>
       </div>
-      <div className="flex justify-evenly bg-white font-bold text-gray-700 cursor-pointer">
-        <div className="flex-grow flex justify-center hover:bg-blue-100 text-blue-400">
+      <div className="flex justify-evenly bg-white font-bold text-gray-700">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 text-blue-400 cursor-pointer">
           <div className="py-3 border-b-4 border-blue-400">Tweets</div>
         </div>
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
           <div className="py-3">Tweets & replies</div>
         </div>
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
           <div className="py-3">Media</div>
         </div>
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
           <div className="py-3">Likes</div>
         </div>
       </div>

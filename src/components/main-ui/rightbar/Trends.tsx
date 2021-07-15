@@ -3,8 +3,8 @@ import ThreeDots from "../../icons/ThreeDots";
 
 const Trends = () => {
   return (
-    <div className="bg-gray-100 my-4 pt-2 rounded-xl">
-      <div className="flex items-center justify-between px-4 mb-4">
+    <div className="bg-gray-100 my-2 pt-2 rounded-xl">
+      <div className="flex items-center justify-between px-4 mb-2">
         <h3 className="font-extrabold text-xl">Trends for you</h3>
         <div className="text-blue-400 hover:bg-blue-100 h-10 w-10 flex items-center justify-center rounded-full cursor-pointer">
           <svg
@@ -28,7 +28,7 @@ const Trends = () => {
       />
       <Trend category="Movies & TV · Trending" title="Elsa" tweets="109K" />
       <Trend category="Movies & TV · Trending" title="Nino" tweets="71.2K" />
-      <div className="hover:bg-gray-200 cursor-pointer text-blue-400 rounded-b-xl p-4">
+      <div className="hover:bg-gray-200 cursor-pointer text-blue-400 rounded-b-xl px-4 py-2">
         Show more
       </div>
     </div>

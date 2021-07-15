@@ -9,7 +9,7 @@ interface Props {
   setFollowLists: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
-const FollowButton: React.FC<{
+export const FollowButton: React.FC<{
   isSelf?: boolean;
   isFollowed?: boolean;
   followCallback: () => void;

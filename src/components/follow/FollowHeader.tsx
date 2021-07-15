@@ -29,13 +29,13 @@ const FollowHeader: React.FC<Props> = ({ user }) => {
         </a>
         <h1 className="mx-2 font-bold">{user?.displayName}</h1>
       </div>
-      <div className="flex justify-evenly bg-white font-bold text-gray-700 cursor-pointer text-xs sm:text-base">
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400">
+      <div className="flex justify-evenly bg-white font-bold text-gray-700 text-xs sm:text-base">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
           <div className="py-3">Followers you know</div>
         </div>
         <Link href={`/user/${user?.username}/followers`}>
           <a
-            className={`flex-grow flex justify-center hover:bg-blue-100 ${
+            className={`flex-grow flex justify-center hover:bg-blue-100 cursor-pointer ${
               isFollowers ? "text-blue-400" : "hover:text-blue-400"
             }`}
           >
@@ -48,7 +48,7 @@ const FollowHeader: React.FC<Props> = ({ user }) => {
         </Link>
         <Link href={`/user/${user?.username}/following`}>
           <a
-            className={`flex-grow flex justify-center hover:bg-blue-100 ${
+            className={`flex-grow flex justify-center hover:bg-blue-100 cursor-pointer ${
               isFollowing ? "text-blue-400" : "hover:text-blue-400"
             }`}
           >

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -30,7 +31,7 @@ const Main: React.FC<{
     });
   };
   return (
-    <div className="bg-gray-100 flex-grow">
+    <div className="bg-gray-100 max-w-[600px] flex-grow min-h-screen">
       <div className="bg-white m-1 px-4 py-2 flex items-center">
         <div className="pr-2 sm:hidden" onClick={() => setIsOpen(true)}>
           <ProfilePic notLink src={user.photo} />
