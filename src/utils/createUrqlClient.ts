@@ -10,7 +10,7 @@ import { isExpired } from "./isExpired";
 import { isServer } from "./isServer";
 
 export const createUrqlClient = (ssrExchange: any) => ({
-  url: "https://tweetrs.herokuapp.com/graphql/",
+  url: "https://twitter.arsaizdihar.site/graphql/",
   // url: "http://localhost:8000/graphql/",
   exchanges: [
     dedupExchange,
