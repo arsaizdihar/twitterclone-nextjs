@@ -6,6 +6,7 @@ module.exports = {
       "s.gravatar.com",
       "pbs.twimg.com",
       "twitterapi.arsaizdihar.site",
+      "arsatweet.s3.amazonaws.com",
     ],
   },
 };
