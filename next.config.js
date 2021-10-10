@@ -5,7 +5,7 @@ module.exports = {
       "lh3.googleusercontent.com",
       "s.gravatar.com",
       "pbs.twimg.com",
-      "twitterapi.arsaizdihar.site",
+      "twitterapi.arsaiz.xyz",
       "arsatweet.s3.amazonaws.com",
     ],
   },

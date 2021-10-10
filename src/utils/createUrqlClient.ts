@@ -10,7 +10,7 @@ import { isExpired } from "./isExpired";
 import { isServer } from "./isServer";
 
 export const createUrqlClient = (ssrExchange: any) => ({
-  url: "https://twitterapi.arsaizdihar.site/graphql/",
+  url: "https://twitterapi.arsaiz.xyz/graphql/",
   // url: "http://localhost:8000/graphql/",
   exchanges: [
     dedupExchange,
@@ -19,24 +19,27 @@ export const createUrqlClient = (ssrExchange: any) => ({
         Mutation: {
           login: (_result, args, cache, info) => {
             const key = "Query";
-            cache.inspectFields(key).forEach(field => cache.invalidate(key, field.fieldKey))
+            cache
+              .inspectFields(key)
+              .forEach((field) => cache.invalidate(key, field.fieldKey));
           },
           logout: (_result, args, cache, info) => {
             const key = "Query";
-            cache.inspectFields(key).forEach(field => cache.invalidate(key, field.fieldKey))
+            cache
+              .inspectFields(key)
+              .forEach((field) => cache.invalidate(key, field.fieldKey));
           },
           register: (_result, args, cache, info) => {
             const key = "Query";
-            cache.inspectFields(key).forEach(field => cache.invalidate(key, field.fieldKey))
+            cache
+              .inspectFields(key)
+              .forEach((field) => cache.invalidate(key, field.fieldKey));
           },
           postTweet: (_result, args, cache, info) => {
             const key = "Query";
             cache
               .inspectFields(key)
-              .filter(
-                (field) =>
-                  field.fieldName === "tweets"
-              )
+              .filter((field) => field.fieldName === "tweets")
               .forEach((field) => cache.invalidate(key, field.fieldKey));
           },
           follow: (_result, args, cache, info) => {
@@ -54,9 +57,9 @@ export const createUrqlClient = (ssrExchange: any) => ({
               .forEach((field) => cache.invalidate(key, field.fieldKey));
           },
           likeTweet: (_result, args, cache, info) => {
-            const tweetId = info.variables.tweetId as number
-            const isLiked = (info as any).parent.likeTweet.isLiked
-            const increment = isLiked ? 1 : -1
+            const tweetId = info.variables.tweetId as number;
+            const isLiked = (info as any).parent.likeTweet.isLiked;
+            const increment = isLiked ? 1 : -1;
             // cache.updateQuery({query: GetTweetsDocument}, data => {
             //   const newData = {...data, edges: (data?.edges as any[])?.map(edge => edge.node.pk === tweetId ? {...edge, node: {...edge.node, isLiked, likesCount: isLiked ? edge.node.likesCount + 1 : edge.node.likesCount - 1}} : edge) || []}
             //   return newData as any
@@ -64,34 +67,35 @@ export const createUrqlClient = (ssrExchange: any) => ({
             const key = "Query";
             cache
               .inspectFields(key)
-              .filter(
-                (field) =>
-                  field.fieldName === "tweets"
-              )
+              .filter((field) => field.fieldName === "tweets")
               .forEach((field) => {
-                const qInput = {query: GetTweetsDocument, variables: field.arguments}
-                const data = cache.readQuery(qInput) as GetTweetsQuery
-                console.log(field)
-                const likeEdge = data.tweets?.edges?.find(edge => edge?.node?.pk === tweetId)
+                const qInput = {
+                  query: GetTweetsDocument,
+                  variables: field.arguments,
+                };
+                const data = cache.readQuery(qInput) as GetTweetsQuery;
+                console.log(field);
+                const likeEdge = data.tweets?.edges?.find(
+                  (edge) => edge?.node?.pk === tweetId
+                );
                 if (likeEdge) {
                   cache.updateQuery(qInput, (data: GetTweetsQuery | null) => {
                     if (data) {
-                      const newData = {...data}
-                      newData.tweets?.edges?.forEach(edge => {
+                      const newData = { ...data };
+                      newData.tweets?.edges?.forEach((edge) => {
                         if (edge?.node?.pk === tweetId) {
-                          edge.node.isLiked = isLiked
-                          edge.node.likesCount! += increment
+                          edge.node.isLiked = isLiked;
+                          edge.node.likesCount! += increment;
                         }
-                      })
-                      return newData as any
+                      });
+                      return newData as any;
                     }
-                    return data as any
-                  })
+                    return data as any;
+                  });
                 }
-              })
-          }
+              });
+          },
         },
-        
       },
     }),
     ssrExchange,
