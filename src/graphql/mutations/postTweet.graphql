@@ -1,5 +1,5 @@
-mutation PostTweet($text: String!) {
-  postTweet(text: $text) {
+mutation PostTweet($text: String!, $file: Upload) {
+  postTweet(text: $text, file: $file) {
     success
     tweet {
       id

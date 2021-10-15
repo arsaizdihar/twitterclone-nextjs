@@ -1,6 +1,7 @@
 import { authExchange } from "@urql/exchange-auth";
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { dedupExchange, fetchExchange, makeOperation } from "urql";
+import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
+import { dedupExchange, makeOperation } from "urql";
 import {
   GetTweetsDocument,
   GetTweetsQuery,
@@ -157,6 +158,6 @@ export const createUrqlClient = (ssrExchange: any) => ({
         return null;
       },
     }),
-    fetchExchange,
+    multipartFetchExchange,
   ],
 });

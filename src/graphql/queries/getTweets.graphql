@@ -23,6 +23,7 @@ query getTweets(
         likesCount
         retweetCount
         isLiked
+        image
       }
     }
   }

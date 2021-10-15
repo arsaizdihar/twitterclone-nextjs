@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, IconDefinition } from "@fortawesome/free-brands-svg-icons";
-import { faHome, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import {
   faBell,
   faBookmark,
-  faUser,
   faTimesCircle,
+  faUser,
 } from "@fortawesome/free-regular-svg-icons";
-import ProfilePic from "./ProfilePic";
-import ThreeDots from "../icons/ThreeDots";
+import { faHome, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
 import { useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import ThreeDots from "../icons/ThreeDots";
 import Verified from "../icons/Verified";
+import ProfilePic from "./ProfilePic";
 
 const LeftBar: React.FC<{
   isOpen: boolean;
@@ -43,7 +43,7 @@ const LeftBar: React.FC<{
       />
       {/* Search */}
       <div className="flex lg:hidden">
-        <div className="cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 2xl:h-12 2xl:w-12 hover:text-blue-400 text-gray-600 flex items-center justify-center">
+        <div className="cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 hover:text-blue-400 text-gray-600 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 2xl:h-8 2xl:w-8"
@@ -62,7 +62,7 @@ const LeftBar: React.FC<{
       </div>
       <div className="hidden lg:flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
+          <div className="h-10 w-10 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 2xl:h-8 2xl:w-8"
@@ -78,7 +78,7 @@ const LeftBar: React.FC<{
               />
             </svg>
           </div>
-          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+          <h3 className="text-lg hidden xl:inline pr-4 font-semibold">
             Explore
           </h3>
         </div>
@@ -86,7 +86,7 @@ const LeftBar: React.FC<{
       <IconDiv icon={faBell} name="Notifications" href="/" />
       <div className="flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
+          <div className="h-10 w-10 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 2xl:h-8 2xl:w-8"
@@ -102,7 +102,7 @@ const LeftBar: React.FC<{
               />
             </svg>
           </div>
-          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+          <h3 className="text-lg hidden xl:inline pr-4 font-semibold">
             Explore
           </h3>
         </div>
@@ -110,7 +110,7 @@ const LeftBar: React.FC<{
       <IconDiv icon={faBookmark} name="Bookmarks" href="/" />
       <div className="flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
+          <div className="h-10 w-10 flex items-center justify-center">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -121,9 +121,7 @@ const LeftBar: React.FC<{
               <path d="M17 8.64H7c-.414 0-.75-.337-.75-.75s.336-.75.75-.75h10c.414 0 .75.335.75.75s-.336.75-.75.75zm0 4.11H7c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75zm-5 4.11H7c-.414 0-.75-.335-.75-.75s.336-.75.75-.75h5c.414 0 .75.337.75.75s-.336.75-.75.75z"></path>
             </svg>
           </div>
-          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
-            Lists
-          </h3>
+          <h3 className="text-lg hidden xl:inline pr-4 font-semibold">Lists</h3>
         </div>
       </div>
       <IconDiv
@@ -134,7 +132,7 @@ const LeftBar: React.FC<{
       />
       <div className="flex group cursor-pointer">
         <div className="flex items-center rounded-full group-hover:bg-blue-100 group-hover:bg-opacity-80 group-hover:text-blue-400 text-gray-600">
-          <div className="h-10 w-10 2xl:h-12 2xl:w-12 flex items-center justify-center">
+          <div className="h-10 w-10 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 2xl:h-8 2xl:w-8"
@@ -150,9 +148,7 @@ const LeftBar: React.FC<{
               />
             </svg>
           </div>
-          <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
-            More
-          </h3>
+          <h3 className="text-lg hidden xl:inline pr-4 font-semibold">More</h3>
         </div>
       </div>
       <IconDiv icon={faSignOutAlt} name="Logout" href="/auth/logout" />
@@ -208,11 +204,15 @@ const IconDiv: React.FC<{
             current ? "text-blue-400" : "text-gray-600"
           }`}
         >
-          <div className="flex items-center justify-center h-10 w-10 2xl:h-12 2xl:w-12 text-sm 2xl:text-base">
+          <div className="flex items-center justify-center h-10 w-10 text-sm 2xl:text-base">
             <FontAwesomeIcon icon={icon} transform="shrink-8" />
           </div>
           {name !== undefined && (
-            <h3 className="text-lg 2xl:text-xl font-bold hidden xl:inline pr-4">
+            <h3
+              className={`text-lg hidden xl:inline pr-4 font-semibold ${
+                current ? "font-extrabold" : "font-semibold"
+              }`}
+            >
               {name}
             </h3>
           )}

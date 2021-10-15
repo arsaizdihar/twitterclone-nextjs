@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import React from "react";
-import ProfilePic from "../ProfilePic";
-import ThreeDots from "../../icons/ThreeDots";
 import { User } from "../../../redux/slices/userSlice";
 import { getTweetTimeString } from "../../../utils/getTweetTimeString";
-import Link from "next/link";
+import ThreeDots from "../../icons/ThreeDots";
 import Verified from "../../icons/Verified";
+import ProfilePic from "../ProfilePic";
 export interface tweetObject {
   text: string;
   user: User;
@@ -12,6 +13,7 @@ export interface tweetObject {
   likesCount: number;
   retweetsCount: number;
   isLiked: boolean;
+  image?: string;
   id: string;
   pk: number;
 }
@@ -40,6 +42,18 @@ const Tweet: React.FC<{ tweet: tweetObject; likeTweetCallback: () => void }> =
             </div>
           </div>
           <p className="break-words sm:max-w-full">{tweet.text}</p>
+          {tweet.image && (
+            <Link href={tweet.image}>
+              <a target="_blank" className="h-40 text-left">
+                <img
+                  src={tweet.image}
+                  alt={tweet.text}
+                  loading="lazy"
+                  className="object-contain max-h-full"
+                />
+              </a>
+            </Link>
+          )}
           <div className="flex justify-between mt-2 text-gray-600">
             <div className="flex items-center hover:text-blue-400 group">
               <div className="rounded-full h-8 w-8 group-hover:bg-blue-100 flex justify-center items-center cursor-pointer">

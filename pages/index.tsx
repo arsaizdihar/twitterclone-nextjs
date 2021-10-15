@@ -18,12 +18,14 @@ function Home() {
         <meta name="description" content="Twitter Clone made in nextjs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex min-h-screen justify-center">
-        <LeftBar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <Main setIsOpen={setIsOpen} />
-        <RightBar />
-        <MessagesBar />
-      </div>
+      {user && (
+        <div className="flex min-h-screen justify-center">
+          <LeftBar isOpen={isOpen} setIsOpen={setIsOpen} />
+          <Main setIsOpen={setIsOpen} />
+          <RightBar />
+          <MessagesBar />
+        </div>
+      )}
     </div>
   );
 }

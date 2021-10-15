@@ -1,10 +1,10 @@
 import autosize from "autosize";
 import React, { useEffect, useRef, useState } from "react";
-import { tweetObject } from "./Tweet";
-import ProfilePic from "../ProfilePic";
-import { getUser } from "../../../redux/slices/userSlice";
 import { useSelector } from "react-redux";
 import { usePostTweetMutation } from "../../../generated/graphql";
+import { getUser } from "../../../redux/slices/userSlice";
+import ProfilePic from "../ProfilePic";
+import { tweetObject } from "./Tweet";
 
 const TweetInput: React.FC<{
   setTweets: React.Dispatch<React.SetStateAction<tweetObject[]>>;
@@ -12,6 +12,8 @@ const TweetInput: React.FC<{
   const user = useSelector(getUser);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [tweetInput, setTweetInput] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const imageInput = useRef<HTMLInputElement>(null);
   const [, postTweet] = usePostTweetMutation();
   useEffect(() => {
     autosize(textareaRef.current!);
@@ -19,19 +21,20 @@ const TweetInput: React.FC<{
   const handleTweetSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     if (tweetInput.length > 0 && user) {
-      postTweet({ text: tweetInput }).then((res) => {
+      postTweet({ text: tweetInput, file: image }).then((res) => {
         const data = res?.data?.postTweet;
         const tweet = { ...data?.tweet, user } as tweetObject;
         if (data?.success) {
           setTweets((tweets) => [tweet, ...tweets]);
           setTweetInput("");
+          setImage(null);
         }
       });
     }
   };
   return (
     <div className="bg-white flex px-4 mx-1 py-2 mb-4">
-      <div className="mr-2">
+      <div className="mr-2 flex-shrink-0">
         <ProfilePic src={user?.photo} username={user?.username}></ProfilePic>
       </div>
       <div className="flex flex-grow flex-col">
@@ -44,6 +47,14 @@ const TweetInput: React.FC<{
               value={tweetInput}
               onChange={(e) => setTweetInput(e.target.value)}
             ></textarea>
+            {image && (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={URL.createObjectURL(image)}
+                alt={image.name}
+                className="h-40 object-contain"
+              ></img>
+            )}
           </div>
           <div>
             <div className="text-blue-400 hover:bg-blue-100 inline pt-1 pb-2 px-4 rounded-full cursor-pointer select-none">
@@ -62,7 +73,26 @@ const TweetInput: React.FC<{
           </div>
           <hr className="my-4" />
           <div className="flex">
-            <div className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer">
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              ref={imageInput}
+              onChange={(e) => {
+                if (e.target.files) {
+                  const image = e.target.files[0];
+                  if (image.size <= 5242880) {
+                    setImage(image);
+                  } else {
+                    alert("Maximum size is 5 MB");
+                  }
+                }
+              }}
+            />
+            <button
+              onClick={() => imageInput.current?.click()}
+              className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -77,7 +107,7 @@ const TweetInput: React.FC<{
                   d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-            </div>
+            </button>
             <div className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer">
               <svg
                 viewBox="0 0 24 24"

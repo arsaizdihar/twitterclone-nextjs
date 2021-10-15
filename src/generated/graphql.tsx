@@ -52,6 +52,11 @@ export type Scalars = {
    * String, Boolean, Int, Float, List or Object.
    */
   GenericScalar: any;
+  /**
+   * Create scalar that ignores normal serialization/deserialization, since
+   * that will be handled by the multipart request spec
+   */
+  Upload: any;
 };
 
 
@@ -128,6 +133,7 @@ export type MutationFollowArgs = {
 
 
 export type MutationPostTweetArgs = {
+  file?: Maybe<Scalars['Upload']>;
   text: Scalars['String'];
 };
 
@@ -298,12 +304,9 @@ export type QueryTweetsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 
@@ -387,6 +390,7 @@ export type TweetNode = Node & {
   createdAt: Scalars['DateTime'];
   text: Scalars['String'];
   commentTo?: Maybe<TweetNode>;
+  image?: Maybe<Scalars['String']>;
   likes?: Maybe<UserWithFollowNodeConnection>;
   comments: TweetNodeConnection;
   pk?: Maybe<Scalars['Int']>;
@@ -421,12 +425,9 @@ export type TweetNodeCommentsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type TweetNodeConnection = {
@@ -456,6 +457,7 @@ export type UpdateAccount = {
   success?: Maybe<Scalars['Boolean']>;
   errors?: Maybe<Scalars['ExpectedErrorType']>;
 };
+
 
 export type UserNode = Node & {
   __typename?: 'UserNode';
@@ -489,12 +491,9 @@ export type UserNodeTweetsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 
@@ -504,12 +503,9 @@ export type UserNodeLikesArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 
@@ -519,12 +515,9 @@ export type UserNodeRetweetsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type UserWithFollowNode = Node & {
@@ -564,12 +557,9 @@ export type UserWithFollowNodeTweetsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 
@@ -579,12 +569,9 @@ export type UserWithFollowNodeLikesArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 
@@ -594,12 +581,9 @@ export type UserWithFollowNodeRetweetsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['ID']>;
   commentTo?: Maybe<Scalars['ID']>;
-  likes?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  retweets?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type UserWithFollowNodeConnection = {
@@ -675,6 +659,7 @@ export type LoginMutation = (
 
 export type PostTweetMutationVariables = Exact<{
   text: Scalars['String'];
+  file?: Maybe<Scalars['Upload']>;
 }>;
 
 
@@ -794,7 +779,7 @@ export type GetTweetsQuery = (
       & Pick<TweetNodeEdge, 'cursor'>
       & { node?: Maybe<(
         { __typename?: 'TweetNode' }
-        & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'isLiked'>
+        & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'isLiked' | 'image'>
         & { user?: Maybe<(
           { __typename?: 'UserWithFollowNode' }
           & RegularUserFragment
@@ -914,8 +899,8 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const PostTweetDocument = gql`
-    mutation PostTweet($text: String!) {
-  postTweet(text: $text) {
+    mutation PostTweet($text: String!, $file: Upload) {
+  postTweet(text: $text, file: $file) {
     success
     tweet {
       id
@@ -1027,6 +1012,7 @@ export const GetTweetsDocument = gql`
         likesCount
         retweetCount
         isLiked
+        image
       }
     }
   }
