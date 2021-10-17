@@ -19,7 +19,6 @@ const Main: React.FC<{
   const [, likeTweet] = useLikeTweetMutation();
   useEffect(() => {
     const tweetsData = data?.tweets?.edges;
-    console.log(tweetsData);
     if (!fetching && tweetsData) {
       setTweets(tweetsData.map((edge) => edge?.node) as any);
     }

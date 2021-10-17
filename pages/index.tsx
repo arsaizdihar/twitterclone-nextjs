@@ -18,7 +18,7 @@ function Home() {
         <meta name="description" content="Twitter Clone made in nextjs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {user && (
+      {user.isAuthenticated && (
         <div className="flex min-h-screen justify-center">
           <LeftBar isOpen={isOpen} setIsOpen={setIsOpen} />
           <Main setIsOpen={setIsOpen} />

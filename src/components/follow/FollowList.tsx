@@ -12,8 +12,9 @@ interface Props {
 export const FollowButton: React.FC<{
   isSelf?: boolean;
   isFollowed?: boolean;
+  isRequested?: boolean;
   followCallback: () => void;
-}> = ({ isSelf, isFollowed, followCallback }) => {
+}> = ({ isSelf, isFollowed, followCallback, isRequested }) => {
   const [isHover, setIsHover] = useState(false);
   if (isSelf) return null;
   return (
@@ -27,7 +28,13 @@ export const FollowButton: React.FC<{
       onMouseLeave={() => setIsHover(false)}
       onClick={followCallback}
     >
-      {isFollowed ? (isHover ? "Unfollow" : "Following") : "Follow"}
+      {isFollowed
+        ? isHover
+          ? "Unfollow"
+          : "Following"
+        : isRequested
+        ? "Cancel"
+        : "Follow"}
     </button>
   );
 };
@@ -69,6 +76,7 @@ const FollowList: React.FC<Props> = ({ followLists, setFollowLists }) => {
                 <FollowButton
                   isSelf={f.isSelf}
                   isFollowed={f.isFollowed}
+                  isRequested={f.isRequested}
                   followCallback={() => followCallback(f.pk)}
                 />
               }

@@ -45,6 +45,10 @@ export const createUrqlClient = (ssrExchange: any) => ({
           },
           follow: (_result, args, cache, info) => {
             const key = "Query";
+
+            if (!(_result as any)?.follow?.success) {
+              return;
+            }
             cache
               .inspectFields(key)
               .filter(
@@ -75,7 +79,6 @@ export const createUrqlClient = (ssrExchange: any) => ({
                   variables: field.arguments,
                 };
                 const data = cache.readQuery(qInput) as GetTweetsQuery;
-                console.log(field);
                 const likeEdge = data.tweets?.edges?.find(
                   (edge) => edge?.node?.pk === tweetId
                 );

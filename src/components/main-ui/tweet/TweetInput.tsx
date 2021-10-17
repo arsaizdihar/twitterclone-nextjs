@@ -90,6 +90,7 @@ const TweetInput: React.FC<{
               }}
             />
             <button
+              type="button"
               onClick={() => imageInput.current?.click()}
               className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer"
             >

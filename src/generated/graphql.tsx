@@ -59,6 +59,11 @@ export type Scalars = {
   Upload: any;
 };
 
+export type AcceptFollow = {
+  __typename?: 'AcceptFollow';
+  success?: Maybe<Scalars['Boolean']>;
+};
+
 
 
 export type FollowUser = {
@@ -66,6 +71,7 @@ export type FollowUser = {
   success?: Maybe<Scalars['Boolean']>;
   isFollowed?: Maybe<Scalars['Boolean']>;
   user?: Maybe<UserWithFollowNode>;
+  isRequested?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -77,7 +83,9 @@ export type LikeMutation = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  success?: Maybe<Scalars['Boolean']>;
   follow?: Maybe<FollowUser>;
+  acceptFollow?: Maybe<AcceptFollow>;
   postTweet?: Maybe<PostTweet>;
   likeTweet?: Maybe<LikeMutation>;
   retweet?: Maybe<RetweetMutation>;
@@ -128,6 +136,11 @@ export type Mutation = {
 
 
 export type MutationFollowArgs = {
+  userId: Scalars['Int'];
+};
+
+
+export type MutationAcceptFollowArgs = {
   userId: Scalars['Int'];
 };
 
@@ -475,6 +488,7 @@ export type UserNode = Node & {
   username: Scalars['String'];
   bio: Scalars['String'];
   photo?: Maybe<Scalars['String']>;
+  private: Scalars['Boolean'];
   tweets: TweetNodeConnection;
   likes: TweetNodeConnection;
   retweets: TweetNodeConnection;
@@ -536,6 +550,7 @@ export type UserWithFollowNode = Node & {
   username: Scalars['String'];
   bio: Scalars['String'];
   photo?: Maybe<Scalars['String']>;
+  private: Scalars['Boolean'];
   tweets: TweetNodeConnection;
   likes: TweetNodeConnection;
   retweets: TweetNodeConnection;
@@ -548,6 +563,7 @@ export type UserWithFollowNode = Node & {
   isSelf?: Maybe<Scalars['Boolean']>;
   isFollowed?: Maybe<Scalars['Boolean']>;
   isFollowing?: Maybe<Scalars['Boolean']>;
+  isRequested?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -605,7 +621,7 @@ export type UserWithFollowNodeEdge = {
 
 export type RegularUserFragment = (
   { __typename?: 'UserWithFollowNode' }
-  & Pick<UserWithFollowNode, 'id' | 'displayName' | 'email' | 'username' | 'bio' | 'pk' | 'photo' | 'verified' | 'followersCount' | 'followingCount' | 'isFollowed' | 'isFollowing' | 'isSelf'>
+  & Pick<UserWithFollowNode, 'id' | 'displayName' | 'email' | 'username' | 'bio' | 'pk' | 'photo' | 'verified' | 'followersCount' | 'followingCount' | 'isFollowed' | 'isFollowing' | 'isSelf' | 'private' | 'isRequested'>
 );
 
 export type FollowMutationVariables = Exact<{
@@ -617,7 +633,7 @@ export type FollowMutation = (
   { __typename?: 'Mutation' }
   & { follow?: Maybe<(
     { __typename?: 'FollowUser' }
-    & Pick<FollowUser, 'success' | 'isFollowed'>
+    & Pick<FollowUser, 'success' | 'isFollowed' | 'isRequested'>
     & { user?: Maybe<(
       { __typename?: 'UserWithFollowNode' }
       & RegularUserFragment
@@ -845,6 +861,8 @@ export const RegularUserFragmentDoc = gql`
   isFollowed
   isFollowing
   isSelf
+  private
+  isRequested
 }
     `;
 export const FollowDocument = gql`
@@ -855,6 +873,7 @@ export const FollowDocument = gql`
     user {
       ...RegularUser
     }
+    isRequested
   }
 }
     ${RegularUserFragmentDoc}`;

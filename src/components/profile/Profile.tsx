@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { User } from "../../redux/slices/userSlice";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import profileImage from "../../../public/img/profile.jpeg";
 import {
   useFollowMutation,
   useGetTweetsQuery,
   useLikeTweetMutation,
 } from "../../generated/graphql";
-import Tweet, { tweetObject } from "../main-ui/tweet/Tweet";
+import { User } from "../../redux/slices/userSlice";
 import { isServer } from "../../utils/isServer";
-import { useRouter } from "next/router";
-import Verified from "../icons/Verified";
 import { FollowButton } from "../follow/FollowList";
+import Verified from "../icons/Verified";
+import Tweet, { tweetObject } from "../main-ui/tweet/Tweet";
 
 interface Props {
   isCurrentUser: boolean;
@@ -88,6 +88,7 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
                 <FollowButton
                   isFollowed={user.isFollowed}
                   followCallback={followCallback}
+                  isRequested={user.isRequested}
                 />
               )
             )}

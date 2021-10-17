@@ -12,4 +12,6 @@ fragment RegularUser on UserWithFollowNode {
   isFollowed
   isFollowing
   isSelf
+  private
+  isRequested
 }
