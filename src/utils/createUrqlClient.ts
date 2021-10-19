@@ -11,8 +11,8 @@ import { isExpired } from "./isExpired";
 import { isServer } from "./isServer";
 
 export const createUrqlClient = (ssrExchange: any) => ({
-  // url: "https://twitterapi.arsaiz.xyz/graphql/",
-  url: "http://localhost:8000/graphql/",
+  url: "https://twitterapi.arsaiz.xyz/graphql/",
+  // url: "http://localhost:8000/graphql/",
   exchanges: [
     dedupExchange,
     cacheExchange({
