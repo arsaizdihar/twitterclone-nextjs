@@ -1,8 +1,8 @@
-import React from "react";
 import Image from "next/image";
-import profilePic from "../../../public/img/profile.jpeg";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import profilePic from "../../../public/img/profile.jpeg";
 
 const ProfilePic: React.FC<{
   src?: StaticImageData | string | null;
@@ -16,7 +16,7 @@ const ProfilePic: React.FC<{
         <Image
           src={(src as any) || profilePic}
           alt="profile"
-          className="rounded-full hover:opacity-80"
+          className="rounded-full hover:opacity-80 object-cover"
           width={48}
           height={48}
         ></Image>
@@ -27,7 +27,7 @@ const ProfilePic: React.FC<{
       <Image
         src={(src as any) || profilePic}
         alt="profile"
-        className="rounded-full hover:opacity-80"
+        className="rounded-full hover:opacity-80 object-cover"
         width={48}
         height={48}
       ></Image>

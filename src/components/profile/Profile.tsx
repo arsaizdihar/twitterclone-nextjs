@@ -65,7 +65,7 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
               src={user.photo || (profileImage as any)}
               alt="profile"
               layout="fill"
-              className="rounded-full"
+              className="rounded-full object-cover"
             />
           </div>
           <div className="flex justify-end">
