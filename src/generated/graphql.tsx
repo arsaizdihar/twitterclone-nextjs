@@ -65,6 +65,11 @@ export type AcceptFollow = {
 };
 
 
+export type DeleteTweet = {
+  __typename?: 'DeleteTweet';
+  success?: Maybe<Scalars['Boolean']>;
+};
+
 
 export type FollowUser = {
   __typename?: 'FollowUser';
@@ -89,6 +94,7 @@ export type Mutation = {
   postTweet?: Maybe<PostTweet>;
   likeTweet?: Maybe<LikeMutation>;
   retweet?: Maybe<RetweetMutation>;
+  deleteTweet?: Maybe<DeleteTweet>;
   /**
    * Register user with fields defined in the settings.
    *
@@ -159,6 +165,11 @@ export type MutationLikeTweetArgs = {
 
 export type MutationRetweetArgs = {
   tweetId: Scalars['Int'];
+};
+
+
+export type MutationDeleteTweetArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -626,6 +637,19 @@ export type RegularUserFragment = (
   & Pick<UserWithFollowNode, 'id' | 'displayName' | 'email' | 'username' | 'bio' | 'pk' | 'photo' | 'verified' | 'followersCount' | 'followingCount' | 'isFollowed' | 'isFollowing' | 'isSelf' | 'private' | 'isRequested'>
 );
 
+export type DeleteTweetMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteTweetMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteTweet?: Maybe<(
+    { __typename?: 'DeleteTweet' }
+    & Pick<DeleteTweet, 'success'>
+  )> }
+);
+
 export type FollowMutationVariables = Exact<{
   userId: Scalars['Int'];
 }>;
@@ -900,6 +924,17 @@ export const RegularUserFragmentDoc = gql`
   isRequested
 }
     `;
+export const DeleteTweetDocument = gql`
+    mutation DeleteTweet($id: Int!) {
+  deleteTweet(id: $id) {
+    success
+  }
+}
+    `;
+
+export function useDeleteTweetMutation() {
+  return Urql.useMutation<DeleteTweetMutation, DeleteTweetMutationVariables>(DeleteTweetDocument);
+};
 export const FollowDocument = gql`
     mutation Follow($userId: Int!) {
   follow(userId: $userId) {

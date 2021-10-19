@@ -1,8 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import React from "react";
-import { useLikeTweetMutation } from "../../../generated/graphql";
-import { User } from "../../../redux/slices/userSlice";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  useDeleteTweetMutation,
+  useLikeTweetMutation,
+} from "../../../generated/graphql";
+import { getUser, User } from "../../../redux/slices/userSlice";
 import { getTweetTimeString } from "../../../utils/getTweetTimeString";
 import Private from "../../icons/Private";
 import ThreeDots from "../../icons/ThreeDots";
@@ -21,12 +27,22 @@ export interface tweetObject {
   pk: number;
 }
 const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
+  const user = useSelector(getUser);
   const [, likeTweet] = useLikeTweetMutation();
-
+  const [, deleteTweet] = useDeleteTweetMutation();
+  const [showMenu, setShowMenu] = useState(false);
+  const modalRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (showMenu) modalRef.current?.focus();
+  }, [showMenu]);
   const handleLike = () => {
     likeTweet({ tweetId: tweet.pk }).then((res) => {
       return;
     });
+  };
+
+  const handleDelete = () => {
+    if (confirm("Delete tweet?")) deleteTweet({ id: tweet.pk });
   };
   const sender = tweet.user;
   return (
@@ -35,21 +51,41 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
         <ProfilePic src={sender.photo} username={sender.username}></ProfilePic>
       </div>
       <div className="flex flex-col flex-grow px-2">
-        <Link href={`/tweets/${tweet.pk}`}>
-          <a className="flex items-center max-w-full flex-wrap relative">
-            <Link href={`/user/${sender.username}`}>
-              <a className="font-bold hover:underline">{sender.displayName}</a>
-            </Link>
-            {sender.private && <Private />}
-            {sender.verified && <Verified />}
-            <span className="sm:pl-2 text-gray-600 block w-full sm:inline-block sm:w-auto">
-              @{sender.username} · {getTweetTimeString(tweet.createdAt)}
-            </span>
-            <div className="absolute sm:static top-0 right-0 sm:flex flex-grow justify-end">
-              <ThreeDots />
+        <div className="flex items-center max-w-full flex-wrap relative">
+          <Link href={`/user/${sender.username}`}>
+            <a className="font-bold hover:underline">{sender.displayName}</a>
+          </Link>
+          {sender.private && <Private />}
+          {sender.verified && <Verified />}
+          <span className="sm:pl-2 text-gray-600 block w-full sm:inline-block sm:w-auto">
+            @{sender.username} · {getTweetTimeString(tweet.createdAt)}
+          </span>
+          <div className="absolute sm:static top-0 right-0 sm:flex flex-grow justify-end">
+            <div className="relative">
+              <button className="" onClick={() => setShowMenu(true)}>
+                <ThreeDots />
+              </button>
+              {showMenu && sender.username == user.username && (
+                <div
+                  className="absolute right-8 top-0 bg-white shadow-md p-2 rounded-md"
+                  onBlur={() => setShowMenu(false)}
+                >
+                  <button
+                    ref={modalRef}
+                    className="text-red-500 flex items-center hover:bg-gray-100 p-1"
+                    onClick={handleDelete}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrashAlt}
+                      className="w-4 inline-block mr-2"
+                    />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
             </div>
-          </a>
-        </Link>
+          </div>
+        </div>
 
         <Link href={`/tweets/${tweet.pk}`} passHref>
           <p className="break-words sm:max-w-full">{tweet.text}</p>
