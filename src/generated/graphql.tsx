@@ -146,6 +146,7 @@ export type MutationAcceptFollowArgs = {
 
 
 export type MutationPostTweetArgs = {
+  commentTo?: Maybe<Scalars['Int']>;
   file?: Maybe<Scalars['Upload']>;
   text: Scalars['String'];
 };
@@ -243,7 +244,6 @@ export type Query = {
   following?: Maybe<UserWithFollowNodeConnection>;
   unfollowed?: Maybe<UserWithFollowNodeConnection>;
   tweets?: Maybe<TweetNodeConnection>;
-  /** The ID of the object */
   tweet?: Maybe<TweetNode>;
   me?: Maybe<UserWithFollowNode>;
   user?: Maybe<UserWithFollowNode>;
@@ -312,6 +312,7 @@ export type QueryUnfollowedArgs = {
 
 export type QueryTweetsArgs = {
   username?: Maybe<Scalars['String']>;
+  excludeComment?: Maybe<Scalars['Boolean']>;
   offset?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
@@ -324,7 +325,7 @@ export type QueryTweetsArgs = {
 
 
 export type QueryTweetArgs = {
-  id: Scalars['ID'];
+  id: Scalars['Int'];
 };
 
 
@@ -401,7 +402,7 @@ export type TweetNode = Node & {
   id: Scalars['ID'];
   user?: Maybe<UserWithFollowNode>;
   createdAt: Scalars['DateTime'];
-  text: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
   commentTo?: Maybe<TweetNode>;
   image?: Maybe<Scalars['String']>;
   likes?: Maybe<UserWithFollowNodeConnection>;
@@ -409,6 +410,7 @@ export type TweetNode = Node & {
   pk?: Maybe<Scalars['Int']>;
   likesCount?: Maybe<Scalars['Int']>;
   retweetCount?: Maybe<Scalars['Int']>;
+  commentsCount?: Maybe<Scalars['Int']>;
   isLiked?: Maybe<Scalars['Boolean']>;
 };
 
@@ -676,6 +678,7 @@ export type LoginMutation = (
 export type PostTweetMutationVariables = Exact<{
   text: Scalars['String'];
   file?: Maybe<Scalars['Upload']>;
+  commentTo?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -783,6 +786,7 @@ export type GetTweetsQueryVariables = Exact<{
   commentTo?: Maybe<Scalars['ID']>;
   first?: Maybe<Scalars['Int']>;
   username?: Maybe<Scalars['String']>;
+  excludeComment?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -795,7 +799,7 @@ export type GetTweetsQuery = (
       & Pick<TweetNodeEdge, 'cursor'>
       & { node?: Maybe<(
         { __typename?: 'TweetNode' }
-        & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'isLiked' | 'image'>
+        & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
         & { user?: Maybe<(
           { __typename?: 'UserWithFollowNode' }
           & RegularUserFragment
@@ -813,6 +817,37 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'UserWithFollowNode' }
     & RegularUserFragment
+  )> }
+);
+
+export type TweetDetailQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type TweetDetailQuery = (
+  { __typename?: 'Query' }
+  & { tweet?: Maybe<(
+    { __typename?: 'TweetNode' }
+    & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
+    & { user?: Maybe<(
+      { __typename?: 'UserWithFollowNode' }
+      & RegularUserFragment
+    )>, comments: (
+      { __typename?: 'TweetNodeConnection' }
+      & { edges: Array<Maybe<(
+        { __typename?: 'TweetNodeEdge' }
+        & Pick<TweetNodeEdge, 'cursor'>
+        & { node?: Maybe<(
+          { __typename?: 'TweetNode' }
+          & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
+          & { user?: Maybe<(
+            { __typename?: 'UserWithFollowNode' }
+            & RegularUserFragment
+          )> }
+        )> }
+      )>> }
+    ) }
   )> }
 );
 
@@ -918,8 +953,8 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const PostTweetDocument = gql`
-    mutation PostTweet($text: String!, $file: Upload) {
-  postTweet(text: $text, file: $file) {
+    mutation PostTweet($text: String!, $file: Upload, $commentTo: Int) {
+  postTweet(text: $text, file: $file, commentTo: $commentTo) {
     success
     tweet {
       id
@@ -1016,8 +1051,14 @@ export function useFollowingQuery(options: Omit<Urql.UseQueryArgs<FollowingQuery
   return Urql.useQuery<FollowingQuery>({ query: FollowingDocument, ...options });
 };
 export const GetTweetsDocument = gql`
-    query getTweets($after: String, $commentTo: ID, $first: Int, $username: String) {
-  tweets(after: $after, commentTo: $commentTo, first: $first, username: $username) {
+    query getTweets($after: String, $commentTo: ID, $first: Int, $username: String, $excludeComment: Boolean) {
+  tweets(
+    after: $after
+    commentTo: $commentTo
+    first: $first
+    username: $username
+    excludeComment: $excludeComment
+  ) {
     edges {
       cursor
       node {
@@ -1030,6 +1071,7 @@ export const GetTweetsDocument = gql`
         createdAt
         likesCount
         retweetCount
+        commentsCount
         isLiked
         image
       }
@@ -1051,6 +1093,47 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const TweetDetailDocument = gql`
+    query tweetDetail($id: Int!) {
+  tweet(id: $id) {
+    user {
+      ...RegularUser
+    }
+    id
+    pk
+    text
+    createdAt
+    likesCount
+    retweetCount
+    commentsCount
+    isLiked
+    image
+    comments {
+      edges {
+        cursor
+        node {
+          user {
+            ...RegularUser
+          }
+          id
+          pk
+          text
+          createdAt
+          likesCount
+          retweetCount
+          commentsCount
+          isLiked
+          image
+        }
+      }
+    }
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useTweetDetailQuery(options: Omit<Urql.UseQueryArgs<TweetDetailQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<TweetDetailQuery>({ query: TweetDetailDocument, ...options });
 };
 export const UnfollowedDocument = gql`
     query Unfollowed {

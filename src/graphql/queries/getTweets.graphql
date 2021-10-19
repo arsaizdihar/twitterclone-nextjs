@@ -3,12 +3,14 @@ query getTweets(
   $commentTo: ID
   $first: Int
   $username: String
+  $excludeComment: Boolean
 ) {
   tweets(
     after: $after
     commentTo: $commentTo
     first: $first
     username: $username
+    excludeComment: $excludeComment
   ) {
     edges {
       cursor
@@ -22,6 +24,7 @@ query getTweets(
         createdAt
         likesCount
         retweetCount
+        commentsCount
         isLiked
         image
       }

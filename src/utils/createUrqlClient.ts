@@ -38,10 +38,26 @@ export const createUrqlClient = (ssrExchange: any) => ({
           },
           postTweet: (_result, args, cache, info) => {
             const key = "Query";
-            cache
-              .inspectFields(key)
-              .filter((field) => field.fieldName === "tweets")
-              .forEach((field) => cache.invalidate(key, field.fieldKey));
+            console.log(args);
+            if (args?.commentTo) {
+              cache
+                .inspectFields(key)
+                .filter(
+                  (field) =>
+                    field.fieldName === "tweet" &&
+                    field.arguments?.id === args?.commentTo
+                )
+                .forEach((field) => {
+                  cache.invalidate(key, field.fieldKey);
+                });
+            } else {
+              cache
+                .inspectFields(key)
+                .filter((field) => field.fieldName === "tweets")
+                .forEach((field) => {
+                  cache.invalidate(key, field.fieldKey);
+                });
+            }
           },
           follow: (_result, args, cache, info) => {
             const key = "Query";

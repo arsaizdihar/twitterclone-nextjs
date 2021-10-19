@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  useGetTweetsQuery,
-  useLikeTweetMutation,
-} from "../../generated/graphql";
+import { useGetTweetsQuery } from "../../generated/graphql";
 import { getUser } from "../../redux/slices/userSlice";
 import { isServer } from "../../utils/isServer";
 import ProfilePic from "./ProfilePic";
@@ -15,20 +12,16 @@ const Main: React.FC<{
 }> = ({ setIsOpen }) => {
   const [tweets, setTweets] = useState<tweetObject[]>([]);
   const user = useSelector(getUser);
-  const [{ data, fetching }] = useGetTweetsQuery({ pause: isServer() });
-  const [, likeTweet] = useLikeTweetMutation();
+  const [{ data, fetching }] = useGetTweetsQuery({
+    pause: isServer(),
+    variables: { excludeComment: true },
+  });
   useEffect(() => {
     const tweetsData = data?.tweets?.edges;
     if (!fetching && tweetsData) {
       setTweets(tweetsData.map((edge) => edge?.node) as any);
     }
   }, [data, fetching]);
-
-  const likeTweetCallback = (pk: number) => {
-    likeTweet({ tweetId: pk }).then((res) => {
-      return;
-    });
-  };
   return (
     <div className="bg-gray-100 max-w-[600px] flex-grow min-h-screen">
       <div className="bg-white m-1 px-4 py-2 flex items-center">
@@ -51,11 +44,7 @@ const Main: React.FC<{
       </div>
       {user.isAuthenticated && <TweetInput setTweets={setTweets} />}
       {tweets.map((tw, idx) => (
-        <Tweet
-          key={idx}
-          tweet={tw}
-          likeTweetCallback={() => likeTweetCallback(tw.pk)}
-        />
+        <Tweet key={idx} tweet={tw} />
       ))}
     </div>
   );

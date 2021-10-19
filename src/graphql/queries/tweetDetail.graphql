@@ -1,0 +1,37 @@
+query tweetDetail (
+    $id: Int!
+) {
+    tweet(id: $id) {
+        user {
+          ...RegularUser
+        }
+        id
+        pk
+        text
+        createdAt
+        likesCount
+        retweetCount
+        commentsCount
+        isLiked
+        image
+        comments {
+            edges {
+                cursor
+                node {
+                    user {
+                    ...RegularUser
+                    }
+                    id
+                    pk
+                    text
+                    createdAt
+                    likesCount
+                    retweetCount
+                    commentsCount
+                    isLiked
+                    image
+                }
+            }
+        }
+    }
+}
