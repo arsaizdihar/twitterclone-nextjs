@@ -20,7 +20,7 @@ interface Props {
 const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
   const [{ data, fetching }] = useGetTweetsQuery({
     pause: isServer(),
-    variables: { username: username },
+    variables: { username: username, excludeComment: true },
   });
   const router = useRouter();
   const [tweets, setTweets] = useState<tweetObject[]>([]);
