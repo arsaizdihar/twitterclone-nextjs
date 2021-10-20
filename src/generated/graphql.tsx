@@ -95,6 +95,7 @@ export type Mutation = {
   likeTweet?: Maybe<LikeMutation>;
   retweet?: Maybe<RetweetMutation>;
   deleteTweet?: Maybe<DeleteTweet>;
+  refetch?: Maybe<RefetchMutation>;
   /**
    * Register user with fields defined in the settings.
    *
@@ -170,6 +171,11 @@ export type MutationRetweetArgs = {
 
 export type MutationDeleteTweetArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationRefetchArgs = {
+  data?: Maybe<Scalars['String']>;
 };
 
 
@@ -363,6 +369,11 @@ export type QueryUsersArgs = {
   status_SecondaryEmail?: Maybe<Scalars['String']>;
   following?: Maybe<Array<Maybe<Scalars['ID']>>>;
   followers?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type RefetchMutation = {
+  __typename?: 'RefetchMutation';
+  success?: Maybe<Scalars['Boolean']>;
 };
 
 /** Same as `grapgql_jwt` implementation, with standard output. */
@@ -720,6 +731,19 @@ export type PostTweetMutation = (
   )> }
 );
 
+export type RefetchDataMutationVariables = Exact<{
+  data?: Maybe<Scalars['String']>;
+}>;
+
+
+export type RefetchDataMutation = (
+  { __typename?: 'Mutation' }
+  & { refetch?: Maybe<(
+    { __typename?: 'RefetchMutation' }
+    & Pick<RefetchMutation, 'success'>
+  )> }
+);
+
 export type RefreshTokenMutationVariables = Exact<{
   refreshToken: Scalars['String'];
 }>;
@@ -999,6 +1023,17 @@ export const PostTweetDocument = gql`
 
 export function usePostTweetMutation() {
   return Urql.useMutation<PostTweetMutation, PostTweetMutationVariables>(PostTweetDocument);
+};
+export const RefetchDataDocument = gql`
+    mutation RefetchData($data: String) {
+  refetch(data: $data) {
+    success
+  }
+}
+    `;
+
+export function useRefetchDataMutation() {
+  return Urql.useMutation<RefetchDataMutation, RefetchDataMutationVariables>(RefetchDataDocument);
 };
 export const RefreshTokenDocument = gql`
     mutation refreshToken($refreshToken: String!) {

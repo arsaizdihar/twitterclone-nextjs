@@ -1,13 +1,16 @@
 import { NextPage } from "next";
 import { withUrqlClient } from "next-urql";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useUser from "../../src/components/auth/useUser";
 import Head from "../../src/components/main-ui/Head";
 import LeftBar from "../../src/components/main-ui/LeftBar";
 import MessagesBar from "../../src/components/main-ui/MessagesBar";
 import RightBar from "../../src/components/main-ui/rightbar/RightBar";
 import TweetDetail from "../../src/components/main-ui/tweet/TweetDetail";
-import { useTweetDetailQuery } from "../../src/generated/graphql";
+import {
+  useRefetchDataMutation,
+  useTweetDetailQuery,
+} from "../../src/generated/graphql";
 import { createUrqlClient } from "../../src/utils/createUrqlClient";
 interface Props {
   tweetId: string;
@@ -18,6 +21,15 @@ const TweetDetailPage: NextPage<Props> = ({ tweetId }) => {
   const [{ data, fetching }] = useTweetDetailQuery({
     variables: { id: parseInt(tweetId) },
   });
+  const [, refetch] = useRefetchDataMutation();
+
+  useEffect(() => {
+    if (data?.tweet?.user?.private) {
+      refetch({
+        data: JSON.stringify({ query: "tweet", id: parseInt(tweetId) }),
+      });
+    }
+  }, [data?.tweet?.user?.private, refetch, tweetId]);
   return (
     <div>
       <Head

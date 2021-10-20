@@ -89,6 +89,22 @@ export const createUrqlClient = (ssrExchange: any) => ({
               )
               .forEach((field) => cache.invalidate(key, field.fieldKey));
           },
+
+          refetch: (_result, args, cache, info) => {
+            const key = "Query";
+            const data = JSON.parse((args?.data as string) || "");
+            console.log(data);
+            cache
+              .inspectFields(key)
+              .filter((field) => {
+                const yes =
+                  field.fieldName === data?.query &&
+                  field?.arguments?.id === data?.id;
+                console.log(yes);
+                return yes;
+              })
+              .forEach((field) => cache.invalidate(key, field.fieldKey));
+          },
           likeTweet: (_result, args, cache, info) => {
             const tweetId = info.variables.tweetId as number;
             const isLiked = (info as any).parent.likeTweet.isLiked;
