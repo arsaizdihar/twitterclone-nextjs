@@ -6,9 +6,7 @@ import { getUser } from "../../../redux/slices/userSlice";
 import ProfilePic from "../ProfilePic";
 import { tweetObject } from "./Tweet";
 
-const TweetInput: React.FC<{
-  setTweets: React.Dispatch<React.SetStateAction<tweetObject[]>>;
-}> = ({ setTweets }) => {
+const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
   const user = useSelector(getUser);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [tweetInput, setTweetInput] = useState("");
@@ -21,11 +19,11 @@ const TweetInput: React.FC<{
   const handleTweetSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     if (tweetInput.length > 0 && user) {
+      resetPage();
       postTweet({ text: tweetInput, file: image }).then((res) => {
         const data = res?.data?.postTweet;
         const tweet = { ...data?.tweet, user } as tweetObject;
         if (data?.success) {
-          setTweets((tweets) => [tweet, ...tweets]);
           setTweetInput("");
           setImage(null);
         }

@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
-import { useGetTweetsQuery } from "../../generated/graphql";
 import { getUser } from "../../redux/slices/userSlice";
-import { isServer } from "../../utils/isServer";
 import ProfilePic from "./ProfilePic";
-import Tweet, { tweetObject } from "./tweet/Tweet";
 import TweetInput from "./tweet/TweetInput";
+import TweetPages from "./tweet/TweetPages";
 
 const Main: React.FC<{
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setIsOpen }) => {
-  const [tweets, setTweets] = useState<tweetObject[]>([]);
+  // const [tweets, setTweets] = useState<tweetObject[]>([]);
   const user = useSelector(getUser);
-  const [{ data, fetching }] = useGetTweetsQuery({
-    pause: isServer(),
-    variables: { excludeComment: true },
-  });
-  useEffect(() => {
-    const tweetsData = data?.tweets?.edges;
-    if (!fetching && tweetsData) {
-      setTweets(tweetsData.map((edge) => edge?.node) as any);
+
+  const [page, setPage] = useState(1);
+  const [hasNext, setHasNext] = useState(false);
+  const hasNextCallback = (num: number, next: boolean) => {
+    if (num == page) {
+      setHasNext(next);
     }
-  }, [data, fetching]);
+  };
+  // useEffect(() => {
+  //   const tweetsData = data?.tweets?.edges;
+  //   if (!fetching && tweetsData) {
+  //     setTweets(tweetsData.map((edge) => edge?.node) as any);
+  //   }
+  // }, [data, fetching]);
   return (
     <div className="bg-gray-100 max-w-[600px] flex-grow min-h-screen">
       <div className="bg-white m-1 px-4 py-2 flex items-center">
@@ -42,10 +45,23 @@ const Main: React.FC<{
           </svg>
         </div>
       </div>
-      {user.isAuthenticated && <TweetInput setTweets={setTweets} />}
-      {tweets.map((tw, idx) => (
-        <Tweet key={idx} tweet={tw} />
-      ))}
+      {user.isAuthenticated && <TweetInput resetPage={() => setPage(1)} />}
+      <InfiniteScroll
+        dataLength={page} //This is important field to render the next data
+        next={() => setPage(page + 1)}
+        hasMore={hasNext}
+        loader={<h4 className="text-center my-2">Loading...</h4>}
+      >
+        {Array(page)
+          .fill(0)
+          .map((val, index) => (
+            <TweetPages
+              page={index + 1}
+              key={index}
+              hasNextCallback={hasNextCallback}
+            />
+          ))}
+      </InfiniteScroll>
     </div>
   );
 };

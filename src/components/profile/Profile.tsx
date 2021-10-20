@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import profileImage from "../../../public/img/profile.jpeg";
-import { useFollowMutation, useGetTweetsQuery } from "../../generated/graphql";
+import { useFollowMutation } from "../../generated/graphql";
 import { User } from "../../redux/slices/userSlice";
 import { isServer } from "../../utils/isServer";
 import { FollowButton } from "../follow/FollowList";
 import Private from "../icons/Private";
 import Verified from "../icons/Verified";
-import Tweet, { tweetObject } from "../main-ui/tweet/Tweet";
+import TweetPages from "../main-ui/tweet/TweetPages";
 
 interface Props {
   isCurrentUser: boolean;
@@ -18,24 +19,20 @@ interface Props {
 }
 
 const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
-  const [{ data, fetching }] = useGetTweetsQuery({
-    pause: isServer(),
-    variables: { username: username, excludeComment: true },
-  });
   const router = useRouter();
-  const [tweets, setTweets] = useState<tweetObject[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasNext, setHasNext] = useState(false);
+  const hasNextCallback = (num: number, next: boolean) => {
+    if (num == page) {
+      setHasNext(next);
+    }
+  };
   const [, follow] = useFollowMutation();
   const followCallback = () => {
     if (user.pk) {
       follow({ userId: user.pk });
     }
   };
-  useEffect(() => {
-    if (data?.tweets) {
-      const tweetsData = data?.tweets?.edges;
-      setTweets(tweetsData.map((tw) => tw?.node as any));
-    }
-  }, [data?.tweets]);
   return (
     <div className="bg-gray-100 max-w-[600px] flex-grow px-0.5 min-h-screen">
       <div className="bg-white flex p-2 items-center">
@@ -129,9 +126,23 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
         </div>
       </div>
       <div>
-        {tweets.map((tw, idx) => (
-          <Tweet key={idx} tweet={tw} />
-        ))}
+        <InfiniteScroll
+          dataLength={page} //This is important field to render the next data
+          next={() => setPage(page + 1)}
+          hasMore={hasNext}
+          loader={<h4 className="text-center my-2">Loading...</h4>}
+        >
+          {Array(page)
+            .fill(0)
+            .map((val, index) => (
+              <TweetPages
+                page={index + 1}
+                key={index}
+                hasNextCallback={hasNextCallback}
+                username={username}
+              />
+            ))}
+        </InfiniteScroll>
       </div>
     </div>
   );

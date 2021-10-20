@@ -11,8 +11,8 @@ import { isExpired } from "./isExpired";
 import { isServer } from "./isServer";
 
 export const createUrqlClient = (ssrExchange: any) => ({
-  url: "https://twitterapi.arsaiz.xyz/graphql/",
-  // url: "http://localhost:8000/graphql/",
+  // url: "https://twitterapi.arsaiz.xyz/graphql/",
+  url: "http://localhost:8000/graphql/",
   exchanges: [
     dedupExchange,
     cacheExchange({
@@ -55,19 +55,20 @@ export const createUrqlClient = (ssrExchange: any) => ({
                 .inspectFields(key)
                 .filter(
                   (field) =>
-                    field.fieldName === "tweet" &&
-                    field.arguments?.id === args?.commentTo
+                    field.fieldName === "tweets" &&
+                    field.arguments?.commentToPk === args?.commentTo
                 )
                 .forEach((field) => {
                   cache.invalidate(key, field.fieldKey);
                 });
             } else {
-              cache
+              const tweets = [];
+              const caches = cache
                 .inspectFields(key)
-                .filter((field) => field.fieldName === "tweets")
-                .forEach((field) => {
-                  cache.invalidate(key, field.fieldKey);
-                });
+                .filter((field) => field.fieldName === "tweets");
+              caches.forEach((field) => {
+                cache.invalidate(key, field.fieldKey);
+              });
             }
           },
           follow: (_result, args, cache, info) => {

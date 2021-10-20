@@ -322,8 +322,10 @@ export type QueryUnfollowedArgs = {
 
 
 export type QueryTweetsArgs = {
+  commentToPk?: Maybe<Scalars['Int']>;
   username?: Maybe<Scalars['String']>;
   excludeComment?: Maybe<Scalars['Boolean']>;
+  timeline?: Maybe<Scalars['Boolean']>;
   offset?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
@@ -811,6 +813,9 @@ export type GetTweetsQueryVariables = Exact<{
   first?: Maybe<Scalars['Int']>;
   username?: Maybe<Scalars['String']>;
   excludeComment?: Maybe<Scalars['Boolean']>;
+  offset?: Maybe<Scalars['Int']>;
+  timeline?: Maybe<Scalars['Boolean']>;
+  commentToPk?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -818,9 +823,11 @@ export type GetTweetsQuery = (
   { __typename?: 'Query' }
   & { tweets?: Maybe<(
     { __typename?: 'TweetNodeConnection' }
-    & { edges: Array<Maybe<(
+    & { pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ), edges: Array<Maybe<(
       { __typename?: 'TweetNodeEdge' }
-      & Pick<TweetNodeEdge, 'cursor'>
       & { node?: Maybe<(
         { __typename?: 'TweetNode' }
         & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
@@ -857,21 +864,7 @@ export type TweetDetailQuery = (
     & { user?: Maybe<(
       { __typename?: 'UserWithFollowNode' }
       & RegularUserFragment
-    )>, comments: (
-      { __typename?: 'TweetNodeConnection' }
-      & { edges: Array<Maybe<(
-        { __typename?: 'TweetNodeEdge' }
-        & Pick<TweetNodeEdge, 'cursor'>
-        & { node?: Maybe<(
-          { __typename?: 'TweetNode' }
-          & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
-          & { user?: Maybe<(
-            { __typename?: 'UserWithFollowNode' }
-            & RegularUserFragment
-          )> }
-        )> }
-      )>> }
-    ) }
+    )> }
   )> }
 );
 
@@ -1086,16 +1079,22 @@ export function useFollowingQuery(options: Omit<Urql.UseQueryArgs<FollowingQuery
   return Urql.useQuery<FollowingQuery>({ query: FollowingDocument, ...options });
 };
 export const GetTweetsDocument = gql`
-    query getTweets($after: String, $commentTo: ID, $first: Int, $username: String, $excludeComment: Boolean) {
+    query getTweets($after: String, $commentTo: ID, $first: Int, $username: String, $excludeComment: Boolean, $offset: Int, $timeline: Boolean, $commentToPk: Int) {
   tweets(
     after: $after
     commentTo: $commentTo
     first: $first
     username: $username
     excludeComment: $excludeComment
+    offset: $offset
+    timeline: $timeline
+    commentToPk: $commentToPk
   ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
-      cursor
       node {
         user {
           ...RegularUser
@@ -1144,25 +1143,6 @@ export const TweetDetailDocument = gql`
     commentsCount
     isLiked
     image
-    comments {
-      edges {
-        cursor
-        node {
-          user {
-            ...RegularUser
-          }
-          id
-          pk
-          text
-          createdAt
-          likesCount
-          retweetCount
-          commentsCount
-          isLiked
-          image
-        }
-      }
-    }
   }
 }
     ${RegularUserFragmentDoc}`;

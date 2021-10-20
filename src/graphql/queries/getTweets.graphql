@@ -4,6 +4,9 @@ query getTweets(
   $first: Int
   $username: String
   $excludeComment: Boolean
+  $offset: Int
+  $timeline: Boolean
+  $commentToPk: Int
 ) {
   tweets(
     after: $after
@@ -11,9 +14,15 @@ query getTweets(
     first: $first
     username: $username
     excludeComment: $excludeComment
+    offset: $offset
+    timeline: $timeline
+    commentToPk: $commentToPk
   ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
-      cursor
       node {
         user {
           ...RegularUser
