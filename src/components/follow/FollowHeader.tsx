@@ -11,9 +11,9 @@ const FollowHeader: React.FC<Props> = ({ user }) => {
   const isFollowing = router.asPath.endsWith("following");
   return (
     <>
-      <div className="bg-white flex p-2 items-center">
+      <div className="flex p-2 items-center main-border">
         <a
-          className="text-blue-400 hover:bg-blue-100 h-10 w-10 flex items-center justify-center rounded-full cursor-pointer"
+          className="text-blue-500 dark:text-white hover:bg-blue-100 dark:hover:bg-trueGray-900 h-10 w-10 flex items-center justify-center rounded-full cursor-pointer"
           onClick={() => router.back()}
         >
           <svg
@@ -29,18 +29,20 @@ const FollowHeader: React.FC<Props> = ({ user }) => {
         </a>
         <h1 className="mx-2 font-bold">{user?.displayName}</h1>
       </div>
-      <div className="flex justify-evenly bg-white font-bold text-gray-700 text-xs sm:text-base">
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
+      <div className="flex justify-evenly font-bold text-gray-700 dark:text-trueGray-500 text-xs sm:text-base main-border">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 hover:text-blue-500 cursor-pointer">
           <div className="py-3">Followers you know</div>
         </div>
         <Link href={`/user/${user?.username}/followers`}>
           <a
-            className={`flex-grow flex justify-center hover:bg-blue-100 cursor-pointer ${
-              isFollowers ? "text-blue-400" : "hover:text-blue-400"
+            className={`flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 cursor-pointer ${
+              isFollowers
+                ? "text-blue-500 dark:text-gray-200"
+                : "hover:text-blue-500 dark:hover:text-current"
             }`}
           >
             <div
-              className={`py-3 ${isFollowers && "border-b-4 border-blue-400"}`}
+              className={`py-3 ${isFollowers && "border-b-4 border-blue-500"}`}
             >
               Followers
             </div>
@@ -48,12 +50,14 @@ const FollowHeader: React.FC<Props> = ({ user }) => {
         </Link>
         <Link href={`/user/${user?.username}/following`}>
           <a
-            className={`flex-grow flex justify-center hover:bg-blue-100 cursor-pointer ${
-              isFollowing ? "text-blue-400" : "hover:text-blue-400"
+            className={`flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 cursor-pointer ${
+              isFollowing
+                ? "text-blue-500 dark:text-gray-200"
+                : "hover:text-blue-500 dark:hover:text-current"
             }`}
           >
             <div
-              className={`py-3 ${isFollowing && "border-b-4 border-blue-400"}`}
+              className={`py-3 ${isFollowing && "border-b-4 border-blue-500"}`}
             >
               Following
             </div>

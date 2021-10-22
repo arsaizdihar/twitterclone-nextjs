@@ -34,10 +34,10 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
     }
   };
   return (
-    <div className="bg-gray-100 max-w-[600px] flex-grow px-0.5 min-h-screen">
-      <div className="bg-white flex p-2 items-center">
+    <div className="dark:bg-black max-w-[600px] flex-grow min-h-screen dark:text-gray-200">
+      <div className="dark:bg-black flex p-2 items-center main-border">
         <Link href="/">
-          <a className="text-blue-400 hover:bg-blue-100 h-10 w-10 flex items-center justify-center rounded-full cursor-pointer">
+          <a className="text-blue-500 dark:text-white hover:bg-blue-100 dark:hover:bg-trueGray-900 h-10 w-10 flex items-center justify-center rounded-full cursor-pointer">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -54,10 +54,10 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
         {user.private && <Private />}
         {user.verified && <Verified />}
       </div>
-      <div className="h-48 bg-yellow-700 w-full"></div>
-      <div className="px-4 bg-white py-2">
+      <div className="h-48 bg-yellow-700 w-full main-border-x"></div>
+      <div className="px-4 dark:bg-black py-2 main-border-x">
         <div className="relative">
-          <div className="absolute bottom-0 right-0 left-0 bg-white h-32 w-32 rounded-full border-4 border-white">
+          <div className="absolute bottom-0 right-0 left-0 bg-white h-32 w-32 rounded-full border-4 border-white dark:border-black">
             <Image
               src={user.photo || (profileImage as any)}
               alt="profile"
@@ -67,7 +67,7 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
           </div>
           <div className="flex justify-end">
             {isCurrentUser ? (
-              <button className="outline-none bg-white border border-blue-400 text-blue-400 py-2 px-4 rounded-full font-bold hover:bg-blue-100">
+              <button className="outline-none border border-blue-500 dark:border-trueGray-600 text-blue-500 dark:text-current py-2 px-4 rounded-full font-bold hover:bg-blue-100 dark:hover:bg-trueGray-900">
                 Edit profile
               </button>
             ) : (
@@ -87,12 +87,14 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
               {user.displayName} {user.private && <Private />}
               {user.verified && <Verified />}
             </h2>
-            <h3 className="text-sm text-gray-600">@{user.username}</h3>
+            <h3 className="text-sm text-gray-600 dark:text-trueGray-500">
+              @{user.username}
+            </h3>
           </div>
         </div>
         <div className="leading-tight">
           <p className="">{user.bio}</p>
-          <a className="text-xs text-blue-400 cursor-pointer hover:underline">
+          <a className="text-xs text-blue-500 cursor-pointer hover:underline">
             Translate bio
           </a>
         </div>
@@ -100,28 +102,28 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
           <Link href={`${router.asPath}/following`}>
             <a className="cursor-pointer hover:underline">
               <span className="text-lg font-bold">{user.followingCount}</span>{" "}
-              Following
+              <span className="dark:text-trueGray-500">Following</span>
             </a>
           </Link>
           <Link href={`${router.asPath}/followers`}>
             <a className="cursor-pointer hover:underline">
               <span className="text-lg font-bold">{user.followersCount}</span>{" "}
-              Followers
+              <span className="dark:text-trueGray-500">Followers</span>
             </a>
           </Link>
         </div>
       </div>
-      <div className="flex justify-evenly bg-white font-bold text-gray-700">
-        <div className="flex-grow flex justify-center hover:bg-blue-100 text-blue-400 cursor-pointer">
-          <div className="py-3 border-b-4 border-blue-400">Tweets</div>
+      <div className="flex justify-evenly dark:bg-black font-bold text-gray-700 dark:text-trueGray-500 main-border-x">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 text-blue-500 cursor-pointer">
+          <div className="py-3 border-b-4 border-blue-500">Tweets</div>
         </div>
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 hover:text-blue-500 dark:hover:text-current cursor-pointer">
           <div className="py-3">Tweets & replies</div>
         </div>
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 hover:text-blue-500 dark:hover:text-current cursor-pointer">
           <div className="py-3">Media</div>
         </div>
-        <div className="flex-grow flex justify-center hover:bg-blue-100 hover:text-blue-400 cursor-pointer">
+        <div className="flex-grow flex justify-center hover:bg-blue-100 dark:hover:bg-trueGray-900 hover:text-blue-500 dark:hover:text-current cursor-pointer">
           <div className="py-3">Likes</div>
         </div>
       </div>

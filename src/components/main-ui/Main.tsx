@@ -26,13 +26,15 @@ const Main: React.FC<{
   //   }
   // }, [data, fetching]);
   return (
-    <div className="bg-gray-100 max-w-[600px] flex-grow min-h-screen">
-      <div className="bg-white m-1 px-4 py-2 flex items-center">
+    <div className="dark:bg-black max-w-[600px] flex-grow min-h-screen">
+      <div className="bg-white dark:bg-black px-4 py-2 flex items-center main-border">
         <div className="pr-2 sm:hidden" onClick={() => setIsOpen(true)}>
           <ProfilePic notLink src={user.photo} />
         </div>
-        <h1 className="font-extrabold text-xl flex-grow">Home</h1>
-        <div className="text-blue-400 cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
+        <h1 className="font-extrabold text-xl flex-grow dark:text-gray-200">
+          Home
+        </h1>
+        <div className="text-blue-500 dark:text-white cursor-pointer rounded-full hover:bg-blue-100 dark:hover:bg-trueGray-800 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"

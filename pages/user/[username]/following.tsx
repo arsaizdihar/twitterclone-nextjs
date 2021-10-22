@@ -4,7 +4,6 @@ import useUser from "../../../src/components/auth/useUser";
 import FollowHeader from "../../../src/components/follow/FollowHeader";
 import FollowList from "../../../src/components/follow/FollowList";
 import Head from "../../../src/components/main-ui/Head";
-import LeftBar from "../../../src/components/main-ui/LeftBar";
 import MessagesBar from "../../../src/components/main-ui/MessagesBar";
 import RightBar from "../../../src/components/main-ui/rightbar/RightBar";
 import {
@@ -41,7 +40,7 @@ const Following = ({ username }: any) => {
       ></Head>
       <div className="flex min-h-screen justify-center">
         {/* <LeftBar /> */}
-        <div className="bg-gray-100 max-w-[598px] flex-grow px-0.5">
+        <div className="max-w-[598px] flex-grow">
           <FollowHeader user={data?.user as User} />
           <FollowList
             followLists={followingList}

@@ -37,7 +37,7 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
     }
   };
   return (
-    <div className="bg-white flex px-4 mx-1 py-2 mb-4">
+    <div className="bg-white dark:bg-black flex px-4 mx-1 py-2 mb-4">
       <div className="mr-2 flex-shrink-0 flex items-center">
         <ProfilePic src={user?.photo} username={user?.username}></ProfilePic>
       </div>
@@ -45,14 +45,14 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
         <p className="text-gray-400 text-sm">
           Replying to{" "}
           <Link href={`/user/${tweetUser.username}`}>
-            <a className="text-blue-400">@{tweetUser.username}</a>
+            <a className="text-blue-500">@{tweetUser.username}</a>
           </Link>
         </p>
         <form onSubmit={handleTweetSubmit}>
           <div className="py-2" onSubmit={handleTweetSubmit}>
             <textarea
               ref={textareaRef}
-              className="outline-none text-xl resize-none w-full"
+              className="outline-none text-xl resize-none w-full dark:bg-black dark:text-white"
               placeholder="Tweet your reply"
               value={tweetInput}
               onChange={(e) => setTweetInput(e.target.value)}
@@ -66,7 +66,7 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
               ></img>
             )}
           </div>
-          <hr className="my-4" />
+          <hr className="my-4 dark:border-gray-600" />
           <div className="flex">
             <input
               type="file"
@@ -87,7 +87,7 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
             <button
               type="button"
               onClick={() => imageInput.current?.click()}
-              className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer"
+              className="text-blue-500 rounded-full h-10 w-10 hover:bg-blue-100 dark:hover:bg-trueGray-800 flex justify-center items-center cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +104,7 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
                 />
               </svg>
             </button>
-            <div className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer">
+            <div className="text-blue-500 rounded-full h-10 w-10 hover:bg-blue-100 dark:hover:bg-trueGray-800 flex justify-center items-center cursor-pointer">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -117,7 +117,7 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
                 </g>
               </svg>
             </div>
-            <div className="text-blue-400 rounded-full h-10 w-10 hover:bg-blue-100 flex justify-center items-center cursor-pointer">
+            <div className="text-blue-500 rounded-full h-10 w-10 hover:bg-blue-100 dark:hover:bg-trueGray-800 flex justify-center items-center cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -135,7 +135,7 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
             </div>
             <div className="flex-grow flex justify-end items-center">
               {tweetInput !== "" && (
-                <div className="text-blue-400 rounded-full h-8 w-8 hover:bg-blue-100 flex justify-center items-center cursor-pointer mr-2 border border-blue-400">
+                <div className="text-blue-500 rounded-full h-8 w-8 hover:bg-blue-100 dark:hover:bg-trueGray-800 flex justify-center items-center cursor-pointer mr-2 border border-blue-500">
                   <svg
                     viewBox="0 0 24 24"
                     aria-hidden="true"
@@ -151,11 +151,13 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
               <button
                 type="submit"
                 className={`rounded-full px-4 py-2 text-white font-bold ${
-                  tweetInput ? "bg-blue-400" : "bg-blue-300"
+                  tweetInput
+                    ? "bg-blue-500 dark:bg-blue-500"
+                    : "bg-blue-300 dark:bg-blue-500 dark:bg-opacity-60 dark:text-gray-400"
                 }`}
                 disabled={tweetInput === ""}
               >
-                Tweet
+                Reply
               </button>
             </div>
           </div>

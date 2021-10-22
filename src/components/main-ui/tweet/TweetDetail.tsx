@@ -23,7 +23,7 @@ const TweetDetail: React.FC<Props> = ({ data }) => {
     }
   };
   return (
-    <div className="bg-gray-100 max-w-[600px] flex-grow min-h-screen">
+    <div className="bg-gray-100 dark:bg-black dark:border dark:border-gray_dark max-w-[600px] flex-grow min-h-screen main-border">
       {data?.tweet && (
         <>
           <Tweet tweet={data.tweet as any} />

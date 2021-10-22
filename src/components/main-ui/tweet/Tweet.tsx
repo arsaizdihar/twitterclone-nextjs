@@ -46,7 +46,7 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
   };
   const sender = tweet.user;
   return (
-    <div className="bg-white flex px-2 sm:px-4 m-1 py-4 hover:bg-gray-100 cursor-pointer">
+    <div className="bg-white dark:bg-black dark:text-gray-200 flex px-2 sm:px-4 py-4 hover:bg-gray-100 dark:hover:bg-trueGray-900 cursor-pointer main-border">
       <div className="mr-2 w-12 flex-shrink-0">
         <ProfilePic src={sender.photo} username={sender.username}></ProfilePic>
       </div>
@@ -57,7 +57,7 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
           </Link>
           {sender.private && <Private />}
           {sender.verified && <Verified />}
-          <span className="sm:pl-2 text-gray-600 block w-full sm:inline-block sm:w-auto">
+          <span className="sm:pl-2 text-trueGray-500 block w-full sm:inline-block sm:w-auto">
             @{sender.username} · {getTweetTimeString(tweet.createdAt)}
           </span>
           <div className="absolute sm:static top-0 right-0 sm:flex flex-grow justify-end">
@@ -67,12 +67,12 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
               </button>
               {showMenu && sender.username == user.username && (
                 <div
-                  className="absolute right-8 top-0 bg-white shadow-md p-2 rounded-md"
+                  className="absolute right-8 top-0 bg-white dark:bg-black dark:border dark:border-gray-700 shadow-md rounded-md"
                   onBlur={() => setShowMenu(false)}
                 >
                   <button
                     ref={modalRef}
-                    className="text-red-500 flex items-center hover:bg-gray-100 p-1"
+                    className="p-2 text-red-500 flex items-center hover:bg-gray-100 dark:hover:bg-trueGray-800"
                     onClick={handleDelete}
                   >
                     <FontAwesomeIcon
@@ -103,10 +103,10 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
           </Link>
         )}
 
-        <div className="flex justify-between mt-2 text-gray-600">
+        <div className="flex justify-between mt-2 text-trueGray-500">
           <Link href={`/tweets/${tweet.pk}`}>
-            <a className="flex items-center hover:text-blue-400 group">
-              <div className="rounded-full h-8 w-8 group-hover:bg-blue-100 flex justify-center items-center cursor-pointer">
+            <a className="flex items-center hover:text-blue-500 group">
+              <div className="rounded-full h-8 w-8 group-hover:bg-blue-100 dark:group-hover:bg-blue-500 dark:group-hover:bg-opacity-20 dark:group-hover:bg-transparent flex justify-center items-center cursor-pointer">
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -122,7 +122,7 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
             </a>
           </Link>
           <div className="flex items-center hover:text-green-400 group">
-            <div className="rounded-full h-8 w-8 group-hover:bg-green-100 flex justify-center items-center cursor-pointer">
+            <div className="rounded-full h-8 w-8 group-hover:bg-green-100 dark:group-hover:bg-green-500 dark:group-hover:bg-opacity-20 flex justify-center items-center cursor-pointer">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -137,12 +137,12 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
             {tweet.retweetsCount > 0 && tweet.retweetsCount}
           </div>
           <div
-            className={`flex relative items-center hover:text-red-400 group ${
-              tweet.isLiked && "text-red-400"
+            className={`flex relative items-center hover:text-pink-600 group ${
+              tweet.isLiked && "text-pink-600"
             }`}
             onClick={handleLike}
           >
-            <div className="rounded-full h-8 w-8 group-hover:bg-red-100 flex justify-center items-center cursor-pointer">
+            <div className="rounded-full h-8 w-8 group-hover:bg-red-100 dark:group-hover:bg-red-500 dark:group-hover:bg-opacity-20 flex justify-center items-center cursor-pointer">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -164,8 +164,8 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
               </span>
             )}
           </div>
-          <div className="flex items-center hover:text-blue-400 group">
-            <div className="rounded-full h-8 w-8 group-hover:bg-blue-100 flex justify-center items-center cursor-pointer">
+          <div className="flex items-center hover:text-blue-500 group">
+            <div className="rounded-full h-8 w-8 group-hover:bg-blue-100 dark:group-hover:bg-blue-500 dark:group-hover:bg-opacity-20 flex justify-center items-center cursor-pointer">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"

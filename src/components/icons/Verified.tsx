@@ -5,7 +5,7 @@ const Verified = () => {
     <svg
       viewBox="0 0 24 24"
       aria-label="Verified account"
-      className="h-5 w-5 text-blue-400 ml-0.5 inline-block"
+      className="h-5 w-5 text-blue-500 ml-0.5 inline-block"
       fill="currentColor"
     >
       <g>

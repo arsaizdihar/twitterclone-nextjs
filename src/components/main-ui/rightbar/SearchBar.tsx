@@ -6,8 +6,8 @@ const SearchBar = () => {
     <form
       className={`flex items-center rounded-full py-2 px-4 group border ${
         isFocus
-          ? "bg-white text-blue-400 border-blue-400"
-          : "bg-gray-100 text-gray-600 border-transparent"
+          ? "bg-white dark:bg-black text-blue-500 border-blue-500"
+          : "bg-gray-100 dark:bg-gray_dark text-trueGray-500 border-transparent"
       }`}
     >
       <div className="inline-flex items-center justify-center">
@@ -29,7 +29,7 @@ const SearchBar = () => {
       <input
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        className="outline-none bg-transparent ml-4 text-gray-600"
+        className="outline-none bg-transparent ml-4 text-gray-600 dark:text-gray-200"
         placeholder="Search Twitter"
       />
     </form>

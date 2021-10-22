@@ -1,16 +1,16 @@
-import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
-import Head from "../../src/components/main-ui/Head";
+import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import Head from "../../src/components/main-ui/Head";
 import {
   useLoginMutation,
   useRegisterMutation,
 } from "../../src/generated/graphql";
-import { useDispatch } from "react-redux";
 import { setUser, User } from "../../src/redux/slices/userSlice";
-import toErrorMap from "../../src/utils/toErrorMap";
-import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../../src/utils/createUrqlClient";
+import toErrorMap from "../../src/utils/toErrorMap";
 
 interface RegisterErrors {
   username?: string;
@@ -88,7 +88,7 @@ const Login = () => {
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
-            className="h-12 w-12 text-blue-400"
+            className="h-12 w-12 text-blue-500"
             fill="currentColor"
           >
             <g>
@@ -100,7 +100,7 @@ const Login = () => {
           Log in to Twitter
         </h1>
         <form className="w-full" onSubmit={handleLoginForm}>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative">
+          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
             <input
               className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
               placeholder=" "
@@ -113,7 +113,7 @@ const Login = () => {
               Username or Email
             </label>
           </div>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative my-4">
+          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative my-4">
             <input
               className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
               placeholder=" "
@@ -127,12 +127,12 @@ const Login = () => {
               Password
             </label>
           </div>
-          <button className="bg-blue-400 text-white font-bold w-full text-center rounded-full p-3 hover:bg-blue-300 mb-4">
+          <button className="bg-blue-500 text-white font-bold w-full text-center rounded-full p-3 hover:bg-blue-300 mb-4">
             Log in
           </button>
           <p className="text-center">
             <span
-              className="cursor-pointer text-sm hover:underline text-blue-400 font-medium"
+              className="cursor-pointer text-sm hover:underline text-blue-500 font-medium"
               onClick={() => setIsRegister(true)}
             >
               Sign up for Twitter
@@ -152,7 +152,7 @@ const Login = () => {
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                className="h-8 w-8 text-blue-400"
+                className="h-8 w-8 text-blue-500"
                 fill="currentColor"
               >
                 <g>
@@ -168,7 +168,7 @@ const Login = () => {
               className="w-full flex flex-col space-y-4 mb-4"
               autoComplete="off"
             >
-              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative">
+              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
                 <input
                   className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
                   placeholder=" "
@@ -185,7 +185,7 @@ const Login = () => {
                   Username
                 </label>
               </div>
-              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative">
+              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
                 <input
                   className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
                   placeholder=" "
@@ -202,7 +202,7 @@ const Login = () => {
                   Email
                 </label>
               </div>
-              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative">
+              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
                 <input
                   className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
                   placeholder=" "
@@ -219,7 +219,7 @@ const Login = () => {
                   Display Name
                 </label>
               </div>
-              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative">
+              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
                 <input
                   className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
                   placeholder=" "
@@ -237,7 +237,7 @@ const Login = () => {
                   Password
                 </label>
               </div>
-              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-400 relative">
+              <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
                 <input
                   className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 mt-4"
                   placeholder=" "
@@ -255,7 +255,7 @@ const Login = () => {
                   Confirm Password
                 </label>
               </div>
-              <button className="bg-blue-400 text-white font-bold w-full text-center rounded-full p-3 hover:bg-blue-300 mb-4">
+              <button className="bg-blue-500 text-white font-bold w-full text-center rounded-full p-3 hover:bg-blue-300 mb-4">
                 Sign Up
               </button>
             </form>

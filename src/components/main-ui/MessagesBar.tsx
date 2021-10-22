@@ -2,10 +2,10 @@ import React from "react";
 
 const MessagesBar = () => {
   return (
-    <div className="hidden lg:flex justify-between items-center fixed bottom-0 right-10 z-40 bg-white rounded-t-xl shadow-2xl border-2 border-gray-100 cursor-pointer px-4 py-2 w-full max-w-sm">
+    <div className="hidden lg:flex justify-between items-center fixed bottom-0 right-10 z-40 bg-white dark:bg-black rounded-t-xl shadow-2xl border-2 border-gray-100 dark:border-gray-900 dark:text-gray-200 cursor-pointer px-4 py-2 w-full max-w-sm">
       <h3 className="font-extrabold text-xl">Messages</h3>
       <div className="flex">
-        <div className="text-blue-400 cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
+        <div className="text-blue-500 cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -17,7 +17,7 @@ const MessagesBar = () => {
             </g>
           </svg>
         </div>
-        <div className="text-blue-400 cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
+        <div className="text-blue-500 cursor-pointer rounded-full hover:bg-blue-100 hover:bg-opacity-80 h-10 w-10 flex items-center justify-center">
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
