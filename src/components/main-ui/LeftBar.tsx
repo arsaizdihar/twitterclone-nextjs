@@ -13,12 +13,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
+import { getInitialTheme } from "../../utils/getInitialTheme";
+import { toggleTheme } from "../../utils/toggleTheme";
 import Private from "../icons/Private";
 import ThreeDots from "../icons/ThreeDots";
 import Verified from "../icons/Verified";
+import Modal from "./modals/Modal";
 import ProfilePic from "./ProfilePic";
 
 const LeftBar: React.FC<{
@@ -27,12 +30,102 @@ const LeftBar: React.FC<{
 }> = ({ isOpen, setIsOpen }) => {
   const user = useSelector(getUser);
   const router = useRouter();
+  const [openMore, setOpenMore] = useState(false);
+
+  const [theme, setTheme] = useState(getInitialTheme());
+
+  const showMoreMenu = () => setOpenMore(true);
+  const hideMoreMenu = () => setOpenMore(false);
+
   return (
     <nav
       className={`${
         isOpen ? "flex" : "hidden sm:flex"
       } flex-col flex-shrink-0 py-1 pl-2 sm:pl-5 pr-2 sm:pr-0 xl:px-5 space-y-1 2xl:space-y-3 max-h-screen fixed sm:sticky left-0 top-0 overflow-y-auto select-none bg-white dark:bg-black z-50 h-screen`}
     >
+      <Modal open={openMore} onClose={hideMoreMenu} title="Customize your view">
+        <p className="text-center text-gray-500 text-sm">
+          Manage your font size, color, and background. These settings affect
+          all the Twitter accounts on this browser.
+        </p>
+        <h4 className="text-sm font-bold text-gray-500">Background</h4>
+        <div className="p-2 bg-gray-100 dark:bg-trueGray-800 rounded-xl mt-1 grid grid-cols-2 text-center gap-2 font-bold">
+          <button
+            className={`flex p-4 bg-white rounded items-center border-2 ${
+              theme === "light" ? "border-blue-500" : "border-transparent"
+            }`}
+            onClick={() => {
+              toggleTheme(false);
+              setTheme("light");
+            }}
+          >
+            <div
+              className={`rounded-full w-6 h-6 mx-2 border ${
+                theme == "light" ? "bg-blue-500" : ""
+              }`}
+            >
+              {theme == "light" && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-full w-full text-gray-100 p-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+            <div className="text-black">
+              <p className="">Default</p>
+            </div>
+          </button>
+          <button
+            className={`flex p-4 bg-black text-gray-200 rounded items-center ${
+              theme === "dark"
+                ? "border-2 border-blue-500"
+                : "border-transparent"
+            }`}
+            onClick={() => {
+              toggleTheme(true);
+              setTheme("dark");
+            }}
+          >
+            <div
+              className={`rounded-full w-6 h-6 mx-2 ${
+                theme == "dark" ? "bg-blue-500" : "border border-trueGray-700"
+              }`}
+            >
+              {theme == "dark" && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-full w-full text-gray-100 p-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+            <div className="">
+              <p className="">Lights out</p>
+            </div>
+          </button>
+        </div>
+        <button
+          onClick={hideMoreMenu}
+          className="mx-auto bg-blue-500 py-2 px-4 rounded-full block font-bold hover:bg-blue-600 duration-200 text-white my-4"
+        >
+          Done
+        </button>
+      </Modal>
       <div
         className="sm:hidden text-blue-500 hover:text-blue-300 dark:text-white cursor-pointer"
         onClick={() => setIsOpen(false)}
@@ -145,7 +238,7 @@ const LeftBar: React.FC<{
             name="Profile"
             href={`/user/${user.username}`}
           />
-          <div className="flex group cursor-pointer">
+          <button className="flex group cursor-pointer" onClick={showMoreMenu}>
             <div className="flex items-center rounded-full group-hover:bg-blue-100 dark:group-hover:bg-gray-800 group-hover:bg-opacity-80 group-hover:text-blue-500 dark:group-hover:text-gray-200 text-gray-600 dark:text-gray-200">
               <div className="h-10 w-10 flex items-center justify-center">
                 <svg
@@ -167,7 +260,7 @@ const LeftBar: React.FC<{
                 More
               </h3>
             </div>
-          </div>
+          </button>
           <IconDiv icon={faSignOutAlt} name="Logout" href="/auth/logout" />
           <div></div>
           <div className="rounded-full bg-blue-500 hover:bg-opacity-80 h-10 w-10 xl:h-12 xl:w-full text-white flex items-center justify-center flex-shrink-0 cursor-pointer">
