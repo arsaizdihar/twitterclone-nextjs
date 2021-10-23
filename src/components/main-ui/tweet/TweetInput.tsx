@@ -154,11 +154,11 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
               <button
                 type="submit"
                 className={`rounded-full px-4 py-2 text-white font-bold ${
-                  tweetInput
+                  tweetInput || image
                     ? "bg-blue-500 dark:bg-blue-500"
                     : "bg-blue-300 dark:bg-blue-500 dark:bg-opacity-60 dark:text-gray-400"
                 }`}
-                disabled={tweetInput === ""}
+                disabled={tweetInput === "" && image === null}
               >
                 Tweet
               </button>

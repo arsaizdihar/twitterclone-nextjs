@@ -5,9 +5,18 @@ interface Props {
   open?: boolean;
   onClose: () => void;
   title?: string;
+  small?: boolean;
+  titleLeft?: boolean;
 }
 
-const Modal: React.FC<Props> = ({ open, onClose, title, children }) => {
+const Modal: React.FC<Props> = ({
+  open,
+  onClose,
+  title,
+  children,
+  small,
+  ...props
+}) => {
   return (
     <>
       <Transition appear show={open} as={Fragment}>
@@ -45,11 +54,19 @@ const Modal: React.FC<Props> = ({ open, onClose, title, children }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-lg p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-black shadow-xl rounded-2xl">
+              <div
+                className={`inline-block w-full ${
+                  small ? "max-w-xs" : "max-w-lg"
+                } p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-black shadow-xl rounded-2xl`}
+              >
                 {title !== undefined && (
                   <Dialog.Title
                     as="h3"
-                    className="text-xl font-bold leading-6 text-black dark:text-gray-200 text-center"
+                    className={`${
+                      small ? "text-lg" : "text-xl"
+                    } font-bold leading-6 text-black dark:text-gray-200 ${
+                      props.titleLeft ? "" : "text-center"
+                    }`}
                   >
                     {title}
                   </Dialog.Title>

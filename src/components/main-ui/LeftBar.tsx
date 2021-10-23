@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import useLogout from "../../hooks/useLogout";
 import { getUser } from "../../redux/slices/userSlice";
 import { getInitialTheme } from "../../utils/getInitialTheme";
 import { toggleTheme } from "../../utils/toggleTheme";
@@ -31,6 +32,7 @@ const LeftBar: React.FC<{
   const user = useSelector(getUser);
   const router = useRouter();
   const [openMore, setOpenMore] = useState(false);
+  const { logout } = useLogout();
 
   const [theme, setTheme] = useState(getInitialTheme());
 
@@ -261,7 +263,7 @@ const LeftBar: React.FC<{
               </h3>
             </div>
           </button>
-          <IconDiv icon={faSignOutAlt} name="Logout" href="/auth/logout" />
+          <IconDiv icon={faSignOutAlt} name="Logout" onClick={logout} />
           <div></div>
           <div className="rounded-full bg-blue-500 hover:bg-opacity-80 h-10 w-10 xl:h-12 xl:w-full text-white flex items-center justify-center flex-shrink-0 cursor-pointer">
             <span className="font-bold text-lg hidden xl:inline-block">
@@ -312,32 +314,44 @@ const IconDiv: React.FC<{
   icon: IconDefinition;
   current?: boolean;
   name?: string;
-  href: string;
-}> = ({ icon, current, name, href }) => {
-  return (
-    <Link href={href}>
-      <a className="flex group cursor-pointer xl:mr-4 ">
-        <div
-          className={`flex items-center rounded-full group-hover:bg-blue-100 dark:group-hover:bg-gray-800 group-hover:bg-opacity-80 group-hover:text-blue-500 dark:group-hover:text-gray-200 ${
-            current
-              ? "text-blue-500 dark:text-white"
-              : "text-gray-600 dark:text-gray-200"
+  href?: string;
+  isButton?: boolean;
+  onClick?: () => void;
+}> = ({ icon, current, name, href, isButton, onClick }) => {
+  const children = (
+    <div
+      className={`flex items-center rounded-full group-hover:bg-blue-100 dark:group-hover:bg-gray-800 group-hover:bg-opacity-80 group-hover:text-blue-500 dark:group-hover:text-gray-200 ${
+        current
+          ? "text-blue-500 dark:text-white"
+          : "text-gray-600 dark:text-gray-200"
+      }`}
+    >
+      <div className="flex items-center justify-center h-10 w-10 text-sm 2xl:text-base">
+        <FontAwesomeIcon icon={icon} transform="shrink-8" />
+      </div>
+      {name !== undefined && (
+        <h3
+          className={`text-lg hidden xl:inline pr-4 font-semibold ${
+            current ? "font-extrabold" : "font-semibold"
           }`}
         >
-          <div className="flex items-center justify-center h-10 w-10 text-sm 2xl:text-base">
-            <FontAwesomeIcon icon={icon} transform="shrink-8" />
-          </div>
-          {name !== undefined && (
-            <h3
-              className={`text-lg hidden xl:inline pr-4 font-semibold ${
-                current ? "font-extrabold" : "font-semibold"
-              }`}
-            >
-              {name}
-            </h3>
-          )}
-        </div>
-      </a>
+          {name}
+        </h3>
+      )}
+    </div>
+  );
+
+  if (isButton || !href) {
+    return (
+      <button className="flex group cursor-pointer xl:mr-4" onClick={onClick}>
+        {children}
+      </button>
+    );
+  }
+
+  return (
+    <Link href={href}>
+      <a className="flex group cursor-pointer xl:mr-4 ">{children}</a>
     </Link>
   );
 };

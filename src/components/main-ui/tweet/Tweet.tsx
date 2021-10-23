@@ -13,6 +13,7 @@ import { getTweetTimeString } from "../../../utils/getTweetTimeString";
 import Private from "../../icons/Private";
 import ThreeDots from "../../icons/ThreeDots";
 import Verified from "../../icons/Verified";
+import Modal from "../modals/Modal";
 import ProfilePic from "../ProfilePic";
 export interface tweetObject {
   text: string;
@@ -31,6 +32,7 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
   const [, likeTweet] = useLikeTweetMutation();
   const [, deleteTweet] = useDeleteTweetMutation();
   const [showMenu, setShowMenu] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const modalRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (showMenu) modalRef.current?.focus();
@@ -42,11 +44,36 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
   };
 
   const handleDelete = () => {
-    if (confirm("Delete tweet?")) deleteTweet({ id: tweet.pk });
+    deleteTweet({ id: tweet.pk });
   };
   const sender = tweet.user;
   return (
     <div className="bg-white dark:bg-black dark:text-gray-200 flex px-2 sm:px-4 py-4 hover:bg-gray-100 dark:hover:bg-trueGray-900 cursor-pointer main-border">
+      <Modal
+        title="Delete tweet?"
+        onClose={() => setIsDelete(false)}
+        open={isDelete}
+        small
+        titleLeft
+      >
+        <p className="text-sm text-gray-500 mt-2 mb-4">
+          This can’t be undone and it will be removed from your profile, the
+          timeline of any accounts that follow you, and from Twitter search
+          results.
+        </p>
+        <button
+          className="block bg-red-600 w-full p-2 font-bold rounded-full my-2 hover:bg-red-700 duration-200 text-white"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
+        <button
+          className="block bg-white dark:bg-black border-2 dark:border-gray-700 w-full p-2 font-bold rounded-full my-2 hover:bg-gray-200 dark:hover:bg-trueGray-900 duration-200"
+          onClick={() => setIsDelete(false)}
+        >
+          Cancel
+        </button>
+      </Modal>
       <div className="mr-2 w-12 flex-shrink-0">
         <ProfilePic src={sender.photo} username={sender.username}></ProfilePic>
       </div>
@@ -73,7 +100,7 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
                   <button
                     ref={modalRef}
                     className="p-2 text-red-500 flex items-center hover:bg-gray-100 dark:hover:bg-trueGray-800"
-                    onClick={handleDelete}
+                    onClick={() => setIsDelete(true)}
                   >
                     <FontAwesomeIcon
                       icon={faTrashAlt}

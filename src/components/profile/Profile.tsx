@@ -57,7 +57,7 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
       <div className="h-48 bg-yellow-700 w-full main-border-x"></div>
       <div className="px-4 dark:bg-black py-2 main-border-x">
         <div className="relative">
-          <div className="absolute bottom-0 right-0 left-0 bg-white h-32 w-32 rounded-full border-4 border-white dark:border-black">
+          <div className="absolute bottom-0 right-0 left-0 bg-white dark:bg-transparent h-32 w-32 rounded-full border-4 border-white dark:border-black">
             <Image
               src={user.photo || (profileImage as any)}
               alt="profile"
