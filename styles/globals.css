@@ -23,4 +23,8 @@
   .main-border-x {
     @apply border-r-2 border-l-2 border-gray-100 dark:border-gray_dark;
   }
+
+  .error-label {
+    @apply text-red-500 text-xs italic
+  }
 }
