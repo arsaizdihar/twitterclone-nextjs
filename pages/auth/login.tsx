@@ -3,6 +3,7 @@ import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import InputForm from "../../src/components/main-ui/forms/InputForm";
 import Head from "../../src/components/main-ui/Head";
 import Modal from "../../src/components/main-ui/modals/Modal";
 import {
@@ -102,34 +103,24 @@ const Login = () => {
           Log in to Twitter
         </h1>
         <form className="w-full" onSubmit={handleLoginForm}>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              value={loginState.username}
-              onChange={(e) =>
-                setLoginState({ ...loginState, username: e.target.value })
-              }
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Username or Email
-            </label>
-          </div>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative mt-4">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              type="password"
-              value={loginState.password}
-              onChange={(e) =>
-                setLoginState({ ...loginState, password: e.target.value })
-              }
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Password
-            </label>
-          </div>
-          <p className="error-label">{loginErrors.password}</p>
+          <InputForm
+            value={loginState.username}
+            onChange={(e) =>
+              setLoginState({ ...loginState, username: e.target.value })
+            }
+            autoComplete="email"
+            label="Username or Email"
+          />
+          <InputForm
+            type="password"
+            value={loginState.password}
+            onChange={(e) =>
+              setLoginState({ ...loginState, password: e.target.value })
+            }
+            label="Password"
+            autoComplete="current-password"
+            error={loginErrors.password}
+          />
           <button className="bg-blue-500 text-white font-bold w-full text-center rounded-full p-3 hover:bg-blue-300 my-4">
             Log in
           </button>
@@ -162,100 +153,73 @@ const Login = () => {
         <form
           onSubmit={handleRegisterForm}
           className="w-full flex flex-col mb-4"
-          autoComplete="off"
         >
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              value={registerState.username}
-              onChange={(e) =>
-                setRegisterState({
-                  ...registerState,
-                  username: e.target.value,
-                })
-              }
-              autoComplete="off"
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Username
-            </label>
-          </div>
-          <p className="error-label">{registerErrors.username}</p>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative mt-4">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              value={registerState.email}
-              onChange={(e) =>
-                setRegisterState({
-                  ...registerState,
-                  email: e.target.value,
-                })
-              }
-              autoComplete="off"
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Email
-            </label>
-          </div>
-          <p className="error-label">{registerErrors.email}</p>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative mt-4">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              value={registerState.displayName}
-              onChange={(e) =>
-                setRegisterState({
-                  ...registerState,
-                  displayName: e.target.value,
-                })
-              }
-              autoComplete="off"
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Display Name
-            </label>
-          </div>
-          <p className="error-label">{registerErrors.displayName}</p>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative mt-4">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              type="password"
-              value={registerState.password1}
-              onChange={(e) =>
-                setRegisterState({
-                  ...registerState,
-                  password1: e.target.value,
-                })
-              }
-              autoComplete="off"
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Password
-            </label>
-          </div>
-          <p className="error-label">{registerErrors.password}</p>
-          <div className="rounded border border-gray-400 focus-within:ring-1 focus-within:ring-blue-500 relative">
-            <input
-              className="block bg-transparent outline-none w-full px-2 pb-1 text-gray-600 dark:text-gray-200 mt-4"
-              placeholder=" "
-              type="password"
-              value={registerState.password2}
-              onChange={(e) =>
-                setRegisterState({
-                  ...registerState,
-                  password2: e.target.value,
-                })
-              }
-              autoComplete="off"
-            />
-            <label className="px-2 text-sm absolute top-3 z-[-1] duration-300 origin-[0%]">
-              Confirm Password
-            </label>
-          </div>
-          <p className="error-label">{registerErrors.password2}</p>
+          <InputForm
+            value={registerState.username}
+            onChange={(e) =>
+              setRegisterState({
+                ...registerState,
+                username: e.target.value,
+              })
+            }
+            label="Username"
+            autoComplete="off"
+            name="username"
+            error={registerErrors.username}
+          />
+          <InputForm
+            value={registerState.email}
+            onChange={(e) =>
+              setRegisterState({
+                ...registerState,
+                email: e.target.value,
+              })
+            }
+            label="Email"
+            name="email"
+            autoComplete="email"
+            error={registerErrors.email}
+          />
+          <InputForm
+            value={registerState.displayName}
+            onChange={(e) =>
+              setRegisterState({
+                ...registerState,
+                displayName: e.target.value,
+              })
+            }
+            label="Display Name"
+            autoComplete="name"
+            name="displayName"
+            error={registerErrors.displayName}
+          />
+          <InputForm
+            value={registerState.password1}
+            onChange={(e) =>
+              setRegisterState({
+                ...registerState,
+                password1: e.target.value,
+              })
+            }
+            label="Password"
+            autoComplete="new-password"
+            name="new-password"
+            type="password"
+            error={registerErrors.password}
+          />
+          <InputForm
+            value={registerState.password2}
+            onChange={(e) =>
+              setRegisterState({
+                ...registerState,
+                password2: e.target.value,
+              })
+            }
+            label="Confirm Password"
+            autoComplete="new-password2"
+            type="password"
+            error={registerErrors.password2}
+          />
           <button className="bg-blue-500 text-white font-bold w-full text-center rounded-full p-3 hover:bg-blue-300 my-4">
             Sign Up
           </button>

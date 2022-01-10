@@ -7,6 +7,7 @@ interface Props {
   title?: string;
   small?: boolean;
   titleLeft?: boolean;
+  noCorner?: boolean;
 }
 
 const Modal: React.FC<Props> = ({
@@ -57,7 +58,9 @@ const Modal: React.FC<Props> = ({
               <div
                 className={`inline-block w-full ${
                   small ? "max-w-xs" : "max-w-lg"
-                } p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-black shadow-xl rounded-2xl`}
+                } ${
+                  props.noCorner ? "" : "p-6"
+                } my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-black shadow-xl rounded-2xl`}
               >
                 {title !== undefined && (
                   <Dialog.Title

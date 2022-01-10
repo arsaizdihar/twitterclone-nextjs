@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
 import { Provider as ReduxProvider } from "react-redux";
+import "../node_modules/cropperjs/dist/cropper.css";
 import Head from "../src/components/main-ui/Head";
 import store from "../src/redux/store";
 import { getInitialTheme } from "../src/utils/getInitialTheme";

@@ -11,6 +11,7 @@ import { FollowButton } from "../follow/FollowList";
 import Private from "../icons/Private";
 import Verified from "../icons/Verified";
 import TweetPages from "../main-ui/tweet/TweetPages";
+import EditProfile from "./EditProfile";
 
 interface Props {
   isCurrentUser: boolean;
@@ -67,9 +68,7 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
           </div>
           <div className="flex justify-end">
             {isCurrentUser ? (
-              <button className="outline-none border border-blue-500 dark:border-trueGray-600 text-blue-500 dark:text-current py-2 px-4 rounded-full font-bold hover:bg-blue-100 dark:hover:bg-trueGray-900">
-                Edit profile
-              </button>
+              <EditProfile />
             ) : (
               !isServer() && (
                 <FollowButton

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import autosize from "autosize";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -10,12 +11,14 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
   const user = useSelector(getUser);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [tweetInput, setTweetInput] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<string | null>(null);
   const imageInput = useRef<HTMLInputElement>(null);
+
   const [, postTweet] = usePostTweetMutation();
   useEffect(() => {
     autosize(textareaRef.current!);
   }, []);
+
   const handleTweetSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     if (tweetInput.length > 0 && user) {
@@ -46,12 +49,14 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
               onChange={(e) => setTweetInput(e.target.value)}
             ></textarea>
             {image && (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={URL.createObjectURL(image)}
-                alt={image.name}
-                className="h-40 object-contain"
-              ></img>
+              <>
+                <img
+                  src={image}
+                  alt={image}
+                  className="h-40 object-contain"
+                ></img>
+                {/* {<ImageCrop src={image} />} */}
+              </>
             )}
           </div>
           <div>
@@ -77,13 +82,17 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
               accept="image/*"
               ref={imageInput}
               onChange={(e) => {
-                if (e.target.files) {
-                  const image = e.target.files[0];
-                  if (image.size <= 5242880) {
-                    setImage(image);
-                  } else {
-                    alert("Maximum size is 5 MB");
-                  }
+                e.preventDefault();
+                let files;
+                if (e.target) {
+                  files = e.target.files;
+                }
+                const reader = new FileReader();
+                reader.onload = () => {
+                  setImage(reader.result as any);
+                };
+                if (files) {
+                  reader.readAsDataURL(files[0]);
                 }
               }}
             />

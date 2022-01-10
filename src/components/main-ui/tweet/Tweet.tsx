@@ -45,6 +45,7 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
 
   const handleDelete = () => {
     deleteTweet({ id: tweet.pk });
+    setIsDelete(false);
   };
   const sender = tweet.user;
   return (
