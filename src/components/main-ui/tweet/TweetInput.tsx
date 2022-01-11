@@ -2,7 +2,11 @@
 import autosize from "autosize";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { usePostTweetMutation } from "../../../generated/graphql";
+import apolloClient from "../../../core/apollo";
+import {
+  GetTweetsDocument,
+  usePostTweetMutation,
+} from "../../../generated/graphql";
 import { getUser } from "../../../redux/slices/userSlice";
 import ProfilePic from "../ProfilePic";
 import { tweetObject } from "./Tweet";
@@ -14,7 +18,7 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
   const [image, setImage] = useState<string | null>(null);
   const imageInput = useRef<HTMLInputElement>(null);
 
-  const [, postTweet] = usePostTweetMutation();
+  const [postTweet] = usePostTweetMutation();
   useEffect(() => {
     autosize(textareaRef.current!);
   }, []);
@@ -23,14 +27,17 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
     e.preventDefault();
     if (tweetInput.length > 0 && user) {
       resetPage();
-      postTweet({ text: tweetInput, file: image }).then((res) => {
-        const data = res?.data?.postTweet;
-        const tweet = { ...data?.tweet, user } as tweetObject;
-        if (data?.success) {
-          setTweetInput("");
-          setImage(null);
+      postTweet({ variables: { text: tweetInput, file: image } }).then(
+        (res) => {
+          const data = res?.data?.postTweet;
+          const tweet = { ...data?.tweet, user } as tweetObject;
+          if (data?.success) {
+            setTweetInput("");
+            apolloClient.refetchQueries({ include: [GetTweetsDocument] });
+            setImage(null);
+          }
         }
-      });
+      );
     }
   };
   return (

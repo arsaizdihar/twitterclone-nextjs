@@ -1,4 +1,3 @@
-import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import useUser from "../../../src/components/auth/useUser";
 import FollowHeader from "../../../src/components/follow/FollowHeader";
@@ -11,17 +10,14 @@ import {
   useUserQuery,
 } from "../../../src/generated/graphql";
 import { User } from "../../../src/redux/slices/userSlice";
-import { createUrqlClient } from "../../../src/utils/createUrqlClient";
-import { isServer } from "../../../src/utils/isServer";
 interface Props {
   username: string;
 }
 
 const Followers = ({ username }: any) => {
   const { user } = useUser();
-  const [{ data, fetching }] = useUserQuery({ variables: { username } });
-  const [{ data: followersData }] = useFollowersQuery({
-    pause: isServer(),
+  const { data } = useUserQuery({ variables: { username } });
+  const { data: followersData } = useFollowersQuery({
     variables: { username },
   });
   const [followersList, setFollowersList] = useState<User[]>([]);
@@ -56,6 +52,4 @@ const Followers = ({ username }: any) => {
 Followers.getInitialProps = (ctx: any) => {
   return { username: ctx.query.username } as Props;
 };
-export default withUrqlClient(createUrqlClient, { ssr: false })(
-  Followers as any
-);
+export default Followers;

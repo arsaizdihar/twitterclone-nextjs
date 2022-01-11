@@ -1,5 +1,4 @@
 import { Dialog } from "@headlessui/react";
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,7 +10,6 @@ import {
   useRegisterMutation,
 } from "../../src/generated/graphql";
 import { setUser, User } from "../../src/redux/slices/userSlice";
-import { createUrqlClient } from "../../src/utils/createUrqlClient";
 import toErrorMap from "../../src/utils/toErrorMap";
 
 interface RegisterErrors {
@@ -30,8 +28,8 @@ const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [, register] = useRegisterMutation();
-  const [, login] = useLoginMutation();
+  const [register] = useRegisterMutation();
+  const [login] = useLoginMutation();
   const [isRegister, setIsRegister] = useState(false);
   const router = useRouter();
   const [registerState, setRegisterState] = useState({
@@ -46,7 +44,9 @@ const Login = () => {
   const [registerErrors, setRegisterErrors] = useState<RegisterErrors>({});
   const handleRegisterForm: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    register(registerState).then((res) => {
+    register({
+      variables: registerState,
+    }).then((res) => {
       const data = res.data?.register;
       if (data) {
         if (data.success) {
@@ -69,19 +69,21 @@ const Login = () => {
     } else {
       variables.username = username;
     }
-    login(variables).then((value) => {
-      const data = value.data?.tokenAuth;
-      if (data) {
-        if (data.success) {
-          localStorage.setItem("token", data.token || "");
-          localStorage.setItem("refreshToken", data.refreshToken || "");
-          dispatch(setUser(data.user as User));
-          window.location.replace(window.location.origin);
-        } else {
-          setLoginErrors({ password: "Invalid username or password" });
+    login({ variables })
+      .then((value) => {
+        const data = value.data?.tokenAuth;
+        if (data) {
+          if (data.success) {
+            localStorage.setItem("token", data.token || "");
+            localStorage.setItem("refreshToken", data.refreshToken || "");
+            dispatch(setUser(data.user as User));
+            window.location.replace(window.location.origin);
+          }
         }
-      }
-    });
+      })
+      .catch((err) =>
+        setLoginErrors({ password: "Invalid username or password" })
+      );
   };
   return (
     <>
@@ -229,4 +231,4 @@ const Login = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Login);
+export default Login;

@@ -1,4 +1,3 @@
-import { withUrqlClient } from "next-urql";
 import Head from "next/head";
 import { useState } from "react";
 import useUser from "../src/components/auth/useUser";
@@ -6,7 +5,6 @@ import LeftBar from "../src/components/main-ui/LeftBar";
 import Main from "../src/components/main-ui/Main";
 import MessagesBar from "../src/components/main-ui/MessagesBar";
 import RightBar from "../src/components/main-ui/rightbar/RightBar";
-import { createUrqlClient } from "../src/utils/createUrqlClient";
 
 function Home() {
   const { user, loading } = useUser();
@@ -30,4 +28,4 @@ function Home() {
   );
 }
 
-export default withUrqlClient(createUrqlClient)(Home);
+export default Home;

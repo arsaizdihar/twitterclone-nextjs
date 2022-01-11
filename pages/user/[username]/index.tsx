@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import useUser from "../../../src/components/auth/useUser";
@@ -9,7 +8,6 @@ import MessagesBar from "../../../src/components/main-ui/MessagesBar";
 import RightBar from "../../../src/components/main-ui/rightbar/RightBar";
 import Profile from "../../../src/components/profile/Profile";
 import { useUserQuery } from "../../../src/generated/graphql";
-import { createUrqlClient } from "../../../src/utils/createUrqlClient";
 import { isServer } from "../../../src/utils/isServer";
 
 interface Props {
@@ -18,17 +16,20 @@ interface Props {
 
 const UserProfile: NextPage<Props> = ({ username }) => {
   const { user } = useUser(false);
-  const [{ data, fetching }] = useUserQuery({ variables: { username } });
+  const { data, loading } = useUserQuery({
+    variables: { username },
+    ssr: true,
+  });
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const profileUser = data?.user;
 
   useEffect(() => {
-    if (!data?.user?.id && !fetching) {
+    if (!data?.user?.id && !loading) {
       router.push("/");
     }
-  }, [data, fetching, router]);
-  if (!data?.user?.id && !fetching && isServer()) {
+  }, [data, loading, router]);
+  if (!data?.user?.id && !loading && isServer()) {
     return (
       <Head
         title={`No user found. | Twitter Clone`}
@@ -64,6 +65,4 @@ const UserProfile: NextPage<Props> = ({ username }) => {
 UserProfile.getInitialProps = (ctx) => {
   return { username: ctx.query.username } as Props;
 };
-export default withUrqlClient(createUrqlClient, { ssr: true })(
-  UserProfile as any
-);
+export default UserProfile;

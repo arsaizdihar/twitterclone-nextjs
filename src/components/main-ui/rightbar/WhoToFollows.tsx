@@ -5,16 +5,13 @@ import {
   useUnfollowedQuery,
 } from "../../../generated/graphql";
 import { User } from "../../../redux/slices/userSlice";
-import { isServer } from "../../../utils/isServer";
 import Private from "../../icons/Private";
 import Verified from "../../icons/Verified";
 import ProfilePic from "../ProfilePic";
 
 const WhoToFollows = () => {
-  const [, follow] = useFollowMutation();
-  const [{ data }] = useUnfollowedQuery({
-    pause: isServer(),
-  });
+  const [follow] = useFollowMutation();
+  const { data } = useUnfollowedQuery();
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
     if (data?.unfollowed?.edges) {
@@ -24,7 +21,8 @@ const WhoToFollows = () => {
   if (users.length === 0) return null;
   const followCallback = (userId?: number) => {
     if (userId) {
-      follow({ userId }).then((res) => {
+      follow({ variables: { userId } }).then((res) => {
+        console.log(res);
         if (res.data?.follow?.success) {
           setUsers((users) => users.filter((user) => user.pk !== userId));
         }

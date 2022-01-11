@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useGetTweetsQuery } from "../../../generated/graphql";
-import { isServer } from "../../../utils/isServer";
 import Tweet from "./Tweet";
 
 const TweetPages: React.FC<{
@@ -9,8 +8,7 @@ const TweetPages: React.FC<{
   page: number;
   hasNextCallback: (num: number, next: boolean) => void;
 }> = ({ page, hasNextCallback, commentTo, username }) => {
-  const [{ data, fetching }] = useGetTweetsQuery({
-    pause: isServer(),
+  const { data, loading } = useGetTweetsQuery({
     variables: {
       excludeComment: commentTo === undefined,
       timeline: commentTo === undefined,

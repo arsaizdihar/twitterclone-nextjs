@@ -1,8 +1,8 @@
-mutation refreshToken($refreshToken: String!) {
-  refreshToken(refreshToken: $refreshToken) {
+mutation refreshToken {
+  refreshToken {
     success
     errors
     token
-    refreshToken
+    refreshExpiresIn
   }
 }
