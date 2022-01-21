@@ -74,8 +74,6 @@ const Login = () => {
         const data = value.data?.tokenAuth;
         if (data) {
           if (data.success) {
-            localStorage.setItem("token", data.token || "");
-            localStorage.setItem("refreshToken", data.refreshToken || "");
             dispatch(setUser(data.user as User));
             window.location.replace(window.location.origin);
           }

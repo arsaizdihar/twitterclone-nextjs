@@ -9,6 +9,7 @@ import RightBar from "../src/components/main-ui/rightbar/RightBar";
 function Home() {
   const { user, loading } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div>
       <Head>

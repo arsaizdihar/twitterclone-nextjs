@@ -28,10 +28,10 @@ const Profile: React.FC<Props> = ({ isCurrentUser, user, username }) => {
       setHasNext(next);
     }
   };
-  const [, follow] = useFollowMutation();
+  const [follow] = useFollowMutation();
   const followCallback = () => {
     if (user.pk) {
-      follow({ userId: user.pk });
+      follow({ variables: { userId: user.pk } });
     }
   };
   return (

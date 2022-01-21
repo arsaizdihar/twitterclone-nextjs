@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import useUser from "../../../src/components/auth/useUser";
@@ -7,29 +7,44 @@ import LeftBar from "../../../src/components/main-ui/LeftBar";
 import MessagesBar from "../../../src/components/main-ui/MessagesBar";
 import RightBar from "../../../src/components/main-ui/rightbar/RightBar";
 import Profile from "../../../src/components/profile/Profile";
-import { useUserQuery } from "../../../src/generated/graphql";
+import apolloClient from "../../../src/core/apollo";
+import {
+  UserDocument,
+  UserQueryResult,
+  UserWithFollowNode,
+} from "../../../src/generated/graphql";
+import { User } from "../../../src/redux/slices/userSlice";
 import { isServer } from "../../../src/utils/isServer";
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { username } = ctx.query;
+
+  const result = await apolloClient.query<UserQueryResult["data"]>({
+    query: UserDocument,
+    variables: { username },
+  });
+  return {
+    props: { username, user: result.data?.user },
+  };
+};
 
 interface Props {
   username: string;
+  user: UserWithFollowNode;
 }
 
-const UserProfile: NextPage<Props> = ({ username }) => {
+const UserProfile: NextPage<Props> = ({ username, user: data }) => {
   const { user } = useUser(false);
-  const { data, loading } = useUserQuery({
-    variables: { username },
-    ssr: true,
-  });
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const profileUser = data?.user;
+  const profileUser = data as User;
 
   useEffect(() => {
-    if (!data?.user?.id && !loading) {
+    if (!data?.id) {
       router.push("/");
     }
-  }, [data, loading, router]);
-  if (!data?.user?.id && !loading && isServer()) {
+  }, [data, router]);
+  if (!data?.id && isServer()) {
     return (
       <Head
         title={`No user found. | Twitter Clone`}
@@ -40,12 +55,12 @@ const UserProfile: NextPage<Props> = ({ username }) => {
   return (
     <>
       <Head
-        title={`${data?.user?.displayName || "Profile"} (@${
-          data?.user?.username || ""
+        title={`${data?.displayName || "Profile"} (@${
+          data?.username || ""
         }) | Twitter Clone`}
-        description={`The latest Tweets from ${
-          data?.user?.displayName || ""
-        } (@${data?.user?.username || ""}). ${data?.user?.bio}`}
+        description={`The latest Tweets from ${data?.displayName || ""} (@${
+          data?.username || ""
+        }). ${data?.bio}`}
         imageURL={profileUser?.photo || undefined}
       ></Head>
       <div className="flex min-h-screen justify-center">
@@ -60,9 +75,5 @@ const UserProfile: NextPage<Props> = ({ username }) => {
       </div>
     </>
   );
-};
-
-UserProfile.getInitialProps = (ctx) => {
-  return { username: ctx.query.username } as Props;
 };
 export default UserProfile;

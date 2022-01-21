@@ -7,10 +7,8 @@ import { getUser, setUser, User } from "../../redux/slices/userSlice";
 const useUser = (redirect = true) => {
   const user = useSelector(getUser);
   const router = useRouter();
-  const { data, loading } = useMeQuery();
-  // const [{ data, fetching }] = useMeQuery({
-  //   pause: isServer(),
-  // });
+  const { data, loading, error } = useMeQuery();
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (!loading) {
@@ -20,7 +18,7 @@ const useUser = (redirect = true) => {
         router.push("/auth/login");
       }
     }
-  }, [loading, data, dispatch, redirect, router]);
+  }, [loading, data, dispatch, redirect, router, error]);
   return { user, loading };
 };
 
