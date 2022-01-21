@@ -7,7 +7,7 @@ import {
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 const link = createHttpLink({
-  uri: "https://twitterapi.arsaiz.xyz/graphql/",
+  uri: "https://twitter.arsaizdihar.me/graphql/",
   // uri: "http://localhost:8000/graphql/",
   credentials: "include",
 });

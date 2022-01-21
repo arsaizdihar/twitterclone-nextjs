@@ -7,7 +7,8 @@ module.exports = {
       "pbs.twimg.com",
       "twitterapi.arsaiz.xyz",
       "arsatweet.s3.amazonaws.com",
-      "localhost"
+      "twitter.arsaizdihar.me",
+      "localhost",
     ],
   },
 };
