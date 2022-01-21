@@ -29,8 +29,8 @@ export interface tweetObject {
 }
 const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
   const user = useSelector(getUser);
-  const [, likeTweet] = useLikeTweetMutation();
-  const [, deleteTweet] = useDeleteTweetMutation();
+  const [likeTweet] = useLikeTweetMutation();
+  const [deleteTweet] = useDeleteTweetMutation();
   const [showMenu, setShowMenu] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const modalRef = useRef<HTMLButtonElement>(null);
@@ -38,13 +38,13 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
     if (showMenu) modalRef.current?.focus();
   }, [showMenu]);
   const handleLike = () => {
-    likeTweet({ tweetId: tweet.pk }).then((res) => {
+    likeTweet({ variables: { tweetId: tweet.pk } }).then((res) => {
       return;
     });
   };
 
   const handleDelete = () => {
-    deleteTweet({ id: tweet.pk });
+    deleteTweet({ variables: { id: tweet.pk } });
     setIsDelete(false);
   };
   const sender = tweet.user;

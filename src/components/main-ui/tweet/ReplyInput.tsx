@@ -16,24 +16,24 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
   const [tweetInput, setTweetInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const imageInput = useRef<HTMLInputElement>(null);
-  const [, postTweet] = usePostTweetMutation();
+  const [postTweet] = usePostTweetMutation();
   useEffect(() => {
     autosize(textareaRef.current!);
   }, []);
   const handleTweetSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     if (tweetInput.length > 0 && user) {
-      postTweet({ text: tweetInput, file: image, commentTo: tweetId }).then(
-        (res) => {
-          const data = res?.data?.postTweet;
-          const tweet = { ...data?.tweet, user } as tweetObject;
-          if (data?.success) {
-            //   setTweets((tweets) => [tweet, ...tweets]);
-            setTweetInput("");
-            setImage(null);
-          }
+      postTweet({
+        variables: { text: tweetInput, file: image, commentTo: tweetId },
+      }).then((res) => {
+        const data = res?.data?.postTweet;
+        const tweet = { ...data?.tweet, user } as tweetObject;
+        if (data?.success) {
+          //   setTweets((tweets) => [tweet, ...tweets]);
+          setTweetInput("");
+          setImage(null);
         }
-      );
+      });
     }
   };
   return (

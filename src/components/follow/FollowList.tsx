@@ -41,10 +41,10 @@ export const FollowButton: React.FC<{
 };
 
 const FollowList: React.FC<Props> = ({ followLists, setFollowLists }) => {
-  const [, follow] = useFollowMutation();
+  const [follow] = useFollowMutation();
   const followCallback = (userId?: number) => {
     if (userId) {
-      follow({ userId }).then((res) => {
+      follow({ variables: { userId } }).then((res) => {
         if (res.data?.follow?.success) {
           setFollowLists((fs) =>
             fs.map((f) =>
