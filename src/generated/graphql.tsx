@@ -664,7 +664,7 @@ export type UserWithFollowNodeEdge = {
 };
 
 export type RegularUserFragment = (
-  { __typename?: 'UserWithFollowNode' }
+  { __typename: 'UserWithFollowNode' }
   & Pick<UserWithFollowNode, 'id' | 'displayName' | 'email' | 'username' | 'bio' | 'pk' | 'photo' | 'verified' | 'followersCount' | 'followingCount' | 'isFollowed' | 'isFollowing' | 'isSelf' | 'private' | 'isRequested'>
 );
 
@@ -856,7 +856,7 @@ export type GetTweetsQuery = (
     ), edges: Array<Maybe<(
       { __typename?: 'TweetNodeEdge' }
       & { node?: Maybe<(
-        { __typename?: 'TweetNode' }
+        { __typename: 'TweetNode' }
         & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
         & { user?: Maybe<(
           { __typename?: 'UserWithFollowNode' }
@@ -886,7 +886,7 @@ export type TweetDetailQueryVariables = Exact<{
 export type TweetDetailQuery = (
   { __typename?: 'Query' }
   & { tweet?: Maybe<(
-    { __typename?: 'TweetNode' }
+    { __typename: 'TweetNode' }
     & Pick<TweetNode, 'id' | 'pk' | 'text' | 'createdAt' | 'likesCount' | 'retweetCount' | 'commentsCount' | 'isLiked' | 'image'>
     & { user?: Maybe<(
       { __typename?: 'UserWithFollowNode' }
@@ -942,6 +942,7 @@ export const RegularUserFragmentDoc = gql`
   isSelf
   private
   isRequested
+  __typename
 }
     `;
 export const DeleteTweetDocument = gql`
@@ -1362,6 +1363,7 @@ export const GetTweetsDocument = gql`
         user {
           ...RegularUser
         }
+        __typename
         id
         pk
         text
@@ -1451,6 +1453,7 @@ export const TweetDetailDocument = gql`
     user {
       ...RegularUser
     }
+    __typename
     id
     pk
     text

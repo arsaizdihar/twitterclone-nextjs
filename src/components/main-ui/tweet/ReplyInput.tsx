@@ -2,7 +2,11 @@ import autosize from "autosize";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { usePostTweetMutation } from "../../../generated/graphql";
+import {
+  GetTweetsDocument,
+  TweetDetailDocument,
+  usePostTweetMutation,
+} from "../../../generated/graphql";
 import { getUser, User } from "../../../redux/slices/userSlice";
 import ProfilePic from "../ProfilePic";
 import { tweetObject } from "./Tweet";
@@ -16,7 +20,12 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
   const [tweetInput, setTweetInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const imageInput = useRef<HTMLInputElement>(null);
-  const [postTweet] = usePostTweetMutation();
+  const [postTweet] = usePostTweetMutation({
+    refetchQueries: [
+      { query: TweetDetailDocument, variables: { id: tweetId } },
+      GetTweetsDocument,
+    ],
+  });
   useEffect(() => {
     autosize(textareaRef.current!);
   }, []);
@@ -29,7 +38,6 @@ const ReplyInput: React.FC<{ tweetUser: User; tweetId: number }> = ({
         const data = res?.data?.postTweet;
         const tweet = { ...data?.tweet, user } as tweetObject;
         if (data?.success) {
-          //   setTweets((tweets) => [tweet, ...tweets]);
           setTweetInput("");
           setImage(null);
         }

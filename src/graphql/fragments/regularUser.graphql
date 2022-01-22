@@ -14,4 +14,5 @@ fragment RegularUser on UserWithFollowNode {
   isSelf
   private
   isRequested
+  __typename
 }

@@ -27,6 +27,7 @@ query getTweets(
         user {
           ...RegularUser
         }
+        __typename
         id
         pk
         text

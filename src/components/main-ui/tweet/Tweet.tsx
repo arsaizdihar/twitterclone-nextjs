@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import apolloClient from "../../../core/apollo";
 import {
+  GetTweetsDocument,
   useDeleteTweetMutation,
   useLikeTweetMutation,
 } from "../../../generated/graphql";
@@ -39,7 +41,9 @@ const Tweet: React.FC<{ tweet: tweetObject }> = ({ tweet }) => {
   }, [showMenu]);
   const handleLike = () => {
     likeTweet({ variables: { tweetId: tweet.pk } }).then((res) => {
-      return;
+      if (res.data?.likeTweet?.success) {
+        apolloClient.refetchQueries({ include: [GetTweetsDocument] });
+      }
     });
   };
 

@@ -15,7 +15,7 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
   const user = useSelector(getUser);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [tweetInput, setTweetInput] = useState("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const imageInput = useRef<HTMLInputElement>(null);
 
   const [postTweet] = usePostTweetMutation();
@@ -58,8 +58,8 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
             {image && (
               <>
                 <img
-                  src={image}
-                  alt={image}
+                  src={URL.createObjectURL(image)}
+                  alt={"image"}
                   className="h-40 object-contain"
                 ></img>
                 {/* {<ImageCrop src={image} />} */}
@@ -94,12 +94,8 @@ const TweetInput: React.FC<{ resetPage: () => void }> = ({ resetPage }) => {
                 if (e.target) {
                   files = e.target.files;
                 }
-                const reader = new FileReader();
-                reader.onload = () => {
-                  setImage(reader.result as any);
-                };
                 if (files) {
-                  reader.readAsDataURL(files[0]);
+                  setImage(files[0]);
                 }
               }}
             />
