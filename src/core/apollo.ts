@@ -7,8 +7,8 @@ import { createUploadLink } from "apollo-upload-client";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 const link = createUploadLink({
-  // uri: "https://twitter.arsaizdihar.me/graphql/",
-  uri: "http://localhost:8000/graphql/",
+  uri: "https://twitter.arsaizdihar.me/graphql/",
+  // uri: "http://localhost:8000/graphql/",
   credentials: "include",
 });
 
